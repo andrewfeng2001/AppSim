@@ -25,7 +25,7 @@
     .heat-controls input[type=search]{ height:36px; padding:0 12px; border:1px solid #d9dee8; border-radius:6px; min-width:240px; flex:1 1 260px; }
     .legend { display:flex; gap:16px; align-items:center; color:#626c7a; font-size:0.85rem; flex-wrap:wrap;}
     .legend .sw { display:inline-block; width:14px; height:14px; border-radius:3px; vertical-align:-2px; margin-right:5px; border:1px solid transparent;}
-    .sw.ok{ background:#26a641;} .sw.no{ background:#f1b4b4; border-color:#d97777;} .sw.na{ background:#e5e7eb; border-color:#c5ccd6;}
+    .sw.ok{ background:#26a641;} .sw.no{ background:#e5544e;}
 
     .app-block { background:#fff; border:1px solid #d9dee8; border-radius:8px; margin-bottom:14px; overflow:hidden; }
     .app-head { display:flex; justify-content:space-between; align-items:baseline; padding:9px 12px; background:#f4f6f9; border-bottom:1px solid #eef1f5; }
@@ -35,7 +35,7 @@
     .heat-grid { display:grid; gap:3px; padding:10px 12px; width:max-content; }
     .agent-name { font-size:0.78rem; font-weight:600; color:#1f2328; display:flex; align-items:center; height:16px; padding-right:10px; white-space:nowrap; position:sticky; left:0; background:#fff; z-index:2;}
     .cell { width:16px; height:16px; border-radius:3px; cursor:pointer; border:1px solid transparent; }
-    .cell.ok{ background:#26a641;} .cell.no{ background:#f1b4b4; border-color:#e0a0a0;} .cell.na{ background:#e5e7eb; border-color:#c5ccd6;}
+    .cell.ok{ background:#26a641;} .cell.no{ background:#e5544e;}
     .cell:hover{ outline:2px solid #2563eb; outline-offset:1px; }
     .col-head { position:sticky; left:0; background:#fff; z-index:2; font-size:0.72rem; color:#626c7a; height:16px; display:flex; align-items:center; }
 
@@ -45,6 +45,8 @@
     .tip .m{ color:#cbd5e1; margin-top:3px; }
     .back-link{ display:inline-block; margin:1.2rem 0; }
     .note{ color:#626c7a; font-size:0.78rem; }
+    .heat-controls select{ height:36px; padding:0 8px; border:1px solid #d9dee8; border-radius:6px; background:#fff; }
+    .heat-controls label.sel{ display:inline-flex; flex-direction:column; gap:2px; font-size:0.72rem; color:#626c7a; }
   </style>
 </head>
 <body>
@@ -135,13 +137,38 @@
       <!-- ===== Heatmap ===== -->
       <h2 class="title is-4" style="margin-top:2.5rem;">Per-Task Correctness Heatmap</h2>
       <p class="content">
-        Each cell is one (model, task) pair. <span class="legend" style="display:inline-flex;"><span><span class="sw ok"></span>correct</span> <span><span class="sw no"></span>wrong</span> <span><span class="sw na"></span>no result</span></span>.
+        Each cell is one (model, task) pair. <span class="legend" style="display:inline-flex;"><span><span class="sw ok"></span>correct</span> <span><span class="sw no"></span>wrong</span></span> (a missing result counts as wrong).
         Rows are models (ordered by overall accuracy), grouped by app. Hover a cell for the task instruction.
       </p>
       <div class="heat-controls">
         <input type="search" id="appFilter" placeholder="Filter by app name (e.g. WeChat, Amazon)…">
-        <label class="checkbox note"><input type="checkbox" id="reasonOnly"> Reasoning tasks only</label>
+        <label class="sel">Language
+          <select id="langFilter">
+            <option value="all">All</option>
+            <option value="zh">ZH only</option>
+            <option value="en">EN only</option>
+          </select>
+        </label>
+        <label class="sel">Task length
+          <select id="stepFilter">
+            <option value="all">All</option>
+            <option value="le5">#S &le; 5</option>
+            <option value="mid">#S 6&ndash;10</option>
+            <option value="ge11">#S &ge; 11</option>
+          </select>
+        </label>
+        <label class="sel">Numerical reasoning
+          <select id="catFilter">
+            <option value="all">All tasks</option>
+            <option value="any">Numerical reasoning (any)</option>
+            <option value="count">count</option>
+            <option value="calculate">calculate</option>
+            <option value="compare_select">compare_select</option>
+            <option value="threshold_filter">threshold_filter</option>
+          </select>
+        </label>
       </div>
+      <p class="note" id="heatStat" style="margin-bottom:10px;"></p>
       <div id="heatmap"></div>
     </div>
   </section>
@@ -155,26 +182,45 @@
       const root = document.getElementById("heatmap");
       const tip = document.getElementById("tip");
       const appFilter = document.getElementById("appFilter");
-      const reasonOnly = document.getElementById("reasonOnly");
+      const langFilter = document.getElementById("langFilter");
+      const stepFilter = document.getElementById("stepFilter");
+      const catFilter = document.getElementById("catFilter");
+      const heatStat = document.getElementById("heatStat");
 
-      const cls = (v) => v === 1 ? "ok" : v === 0 ? "no" : "na";
-      const lbl = (v) => v === 1 ? "Correct" : v === 0 ? "Wrong" : "No result";
+      const cls = (v) => v === 1 ? "ok" : "no";
+      const lbl = (v) => v === 1 ? "Correct" : "Wrong";
+
+      function stepBucket(steps) {
+        if (steps == null) return null;
+        if (steps <= 5) return "le5";
+        if (steps <= 10) return "mid";
+        return "ge11";
+      }
+
+      function taskVisible(t) {
+        if (langFilter.value !== "all" && t.lang !== langFilter.value) return false;
+        if (stepFilter.value !== "all" && stepBucket(t.steps) !== stepFilter.value) return false;
+        const cv = catFilter.value;
+        if (cv === "any" && t.cats.length === 0) return false;
+        if (cv !== "all" && cv !== "any" && !t.cats.includes(cv)) return false;
+        return true;
+      }
 
       function render() {
         const q = appFilter.value.trim().toLowerCase();
-        const ro = reasonOnly.checked;
         root.innerHTML = "";
 
+        let shownTasks = 0;
         D.appSpans.forEach((span) => {
           if (q && !span.label.toLowerCase().includes(q)) return;
 
           // collect visible task indices for this app
           const idxs = [];
           for (let i = span.start; i <= span.end; i++) {
-            if (ro && !D.tasks[i].reason) continue;
-            idxs.push(i);
+            if (taskVisible(D.tasks[i])) idxs.push(i);
           }
           if (!idxs.length) return;
+          shownTasks += idxs.length;
 
           const block = document.createElement("div");
           block.className = "app-block";
@@ -225,6 +271,9 @@
 
         if (!root.children.length) {
           root.innerHTML = '<p class="note" style="padding:14px;">No tasks match the current filter.</p>';
+          heatStat.textContent = "";
+        } else {
+          heatStat.textContent = `Showing ${shownTasks} task${shownTasks>1?"s":""} across ${root.children.length} app${root.children.length>1?"s":""}.`;
         }
       }
 
@@ -237,9 +286,10 @@
         const m = D.models.find((x) => x.name === cell.dataset.m);
         const v = m.s[i];
         const steps = t.steps != null ? `${t.steps} steps` : "";
-        const rs = t.reason ? " · reasoning" : "";
+        const cats = t.cats.length ? " · " + t.cats.join(", ") : "";
+        const lang = t.lang === "zh" ? "ZH" : t.lang === "en" ? "EN" : "";
         tip.innerHTML = `<strong>${cell.dataset.m} — ${lbl(v)}</strong>`
-          + `<div class="m">${t.app} #${t.i}${steps ? " · " + steps : ""}${rs}</div>`
+          + `<div class="m">${t.app} #${t.i}${steps ? " · " + steps : ""}${lang ? " · " + lang : ""}${cats}</div>`
           + `<div class="m">${t.ins.replace(/</g,"&lt;")}</div>`;
         tip.classList.add("on");
       });
@@ -257,7 +307,9 @@
       });
 
       appFilter.addEventListener("input", render);
-      reasonOnly.addEventListener("change", render);
+      langFilter.addEventListener("change", render);
+      stepFilter.addEventListener("change", render);
+      catFilter.addEventListener("change", render);
       render();
     })();
   </script>

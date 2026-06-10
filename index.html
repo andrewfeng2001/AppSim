@@ -227,6 +227,61 @@
 <!-- End dataset statistics -->
 
 
+<!-- App gallery -->
+<section class="section hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">The 17 Simulated Apps</h2>
+        <div class="content has-text-justified">
+          <p>
+            AppSim-Bench spans 17 high-frequency apps across video sharing, travel, food delivery, navigation, e-commerce, music streaming, social media, communication, ride hailing, and video conferencing. Each is a controllable simulation that reproduces the task-relevant screens and flows of its real-world counterpart. Screenshots below show one representative screen per app.
+          </p>
+        </div>
+      </div>
+    </div>
+    <style>
+      .app-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 20px;
+      }
+      .app-card { text-align: center; }
+      .app-card img {
+        width: 100%;
+        border-radius: 12px;
+        border: 1px solid #d9dee8;
+        box-shadow: 0 6px 16px rgba(31,35,40,0.10);
+        display: block;
+      }
+      .app-card .app-name {
+        margin-top: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #1f2328;
+      }
+      @media (max-width: 640px) {
+        .app-gallery { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 14px; }
+      }
+    </style>
+    <div class="app-gallery" id="appGallery"></div>
+    <script>
+      (function () {
+        var apps = [["bilibili","Bilibili"],["ctrip","Ctrip"],["eleme","Ele.me"],["amap","Amap"],["jd","JD"],["netease-music","NetEase Cloud Music"],["rednote","RedNote"],["tencent-meeting","Tencent Meeting"],["wechat","WeChat"],["amazon","Amazon"],["booking","Booking.com"],["instagram","Instagram"],["spotify","Spotify"],["ubereats","Uber Eats"],["whatsapp","WhatsApp"],["youtube","YouTube"],["zoom","Zoom"]];
+        var g = document.getElementById("appGallery");
+        g.innerHTML = apps.map(function (a) {
+          return '<div class="app-card">'
+            + '<img src="static/images/apps/' + a[0] + '.jpg" alt="' + a[1] + ' simulated app screenshot" loading="lazy">'
+            + '<div class="app-name">' + a[1] + '</div>'
+            + '</div>';
+        }).join("");
+      })();
+    </script>
+  </div>
+</section>
+<!-- End app gallery -->
+
+
 <!-- Leaderboard -->
 <section class="section hero">
   <div class="container is-max-desktop">

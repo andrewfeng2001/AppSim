@@ -5,6 +5,17 @@ and emit a self-contained JS data file for the GitHub Pages leaderboard heatmap.
 The output (static/data/leaderboard_data.js) sets window.APPSIM_LEADERBOARD and
 contains NO machine paths or repo-relative dependencies, so it is safe to deploy.
 
+Each task carries:
+  app   - display label
+  i     - local index within the app (0-based)
+  ins   - instruction
+  steps - human-annotated reference step count
+  lang  - "zh" or "en"
+  cats  - list of numerical-reasoning subtypes (count/calculate/compare_select/
+          threshold_filter); empty list means not a numerical-reasoning task.
+
+Status is BINARY: 1 = correct, 0 = wrong (a missing result row counts as wrong).
+
 Run from anywhere; paths to the AppSim repo are configured below.
 """
 from __future__ import annotations
@@ -17,6 +28,7 @@ from pathlib import Path
 APPSIM_SRC = Path("/root/AppSim/AppSim/src")
 RESULT_DIR = Path("/root/AppSim/AppSim/scripts/results/Valid-Model-Results")
 GRID_TOOL = Path("/root/AppSim/T01-interactive_agent_task_grid")
+NUM_TASK_JSON = Path("/root/AppSim/Stat-Results-For-Paper/num_task_acc/XXX.json")
 OUTPUT = Path("/root/AppSim/appsim-github-page/static/data/leaderboard_data.js")
 
 # Paper-accurate display names + ordering (by overall accuracy, descending),
@@ -39,8 +51,34 @@ MODEL_ORDER = [
     ("0516_m3a_gemini_2.5_pro",  "Gemini-2.5-Pro"),
 ]
 
-# status encoding: 1 = correct, 0 = wrong, -1 = no result row
-STATUS_CODE = {"success": 1, "failure": 0, "missing": -1}
+# ZH/EN app groups, keyed by catalog enum name (from paper Table: acc-by-language).
+ZH_APPS = {"BILIBILI", "CTRIP", "ELEME", "GAODE", "MUSIC", "MYJD", "RED_NOTE", "TENCENT_MEETING", "WECHAT"}
+EN_APPS = {"AMAZON", "BOOKING", "INSTAGRAM", "SPOTIFY", "UBEREATS", "WHATSAPP", "YOUTUBE", "ZOOM"}
+
+# num_task_acc/XXX.json app key -> catalog enum name
+JSON2ENUM = {
+    "amazon": "AMAZON", "bilibili": "BILIBILI", "booking": "BOOKING", "ctrip": "CTRIP",
+    "eleme": "ELEME", "gaode": "GAODE", "instagram": "INSTAGRAM", "jd": "MYJD",
+    "music": "MUSIC", "rednote": "RED_NOTE", "spotify": "SPOTIFY",
+    "tencentmeeting": "TENCENT_MEETING", "ubereats": "UBEREATS", "wechat": "WECHAT",
+    "whatsapp": "WHATSAPP", "youtube": "YOUTUBE", "zoom": "ZOOM",
+}
+
+# binary status: success -> 1, everything else (failure or missing) -> 0
+def status_code(status: str) -> int:
+    return 1 if status == "success" else 0
+
+
+def load_numerical_categories():
+    """Return {(enum_name, local_index): [categories]} and the category definitions."""
+    data = json.loads(NUM_TASK_JSON.read_text(encoding="utf-8"))
+    mapping: dict[tuple[str, int], list[str]] = {}
+    for jkey, info in data["apps"].items():
+        enum_name = JSON2ENUM[jkey]
+        for task in info["tasks"]:
+            local_index = task["id"] - 1  # json id is 1-based; catalog is 0-based
+            mapping[(enum_name, local_index)] = task["categories"]
+    return mapping, data["category_definitions"]
 
 
 def main() -> None:
@@ -51,16 +89,29 @@ def main() -> None:
     app_map = B.import_tasks(APPSIM_SRC)
     catalog, spans, id_lookup, instr_lookup = B.build_task_catalog(app_map)
 
-    tasks = [
-        {
+    num_cats, cat_defs = load_numerical_categories()
+
+    tasks = []
+    for m in catalog:
+        if m.app_key in ZH_APPS:
+            lang = "zh"
+        elif m.app_key in EN_APPS:
+            lang = "en"
+        else:
+            lang = "?"
+        tasks.append({
             "app": m.app_label,
             "i": m.local_index,
             "ins": m.instruction,
             "steps": m.human_steps,
-            "reason": bool(m.is_reasoning) if m.is_reasoning is not None else False,
-        }
-        for m in catalog
-    ]
+            "lang": lang,
+            "cats": num_cats.get((m.app_key, m.local_index), []),
+        })
+
+    # sanity: numerical-reasoning task count must match the paper (183)
+    num_count = sum(1 for t in tasks if t["cats"])
+    if num_count != 183:
+        print(f"WARNING: numerical-reasoning task count = {num_count}, expected 183", file=sys.stderr)
 
     app_spans = [
         {"label": s["label"], "start": int(s["start"]), "end": int(s["end"]), "count": int(s["count"])}
@@ -74,18 +125,20 @@ def main() -> None:
         if folder not in folder_to_dir:
             raise SystemExit(f"Missing result folder: {folder}")
         run = B.load_agent_run(folder_to_dir[folder], catalog, id_lookup, instr_lookup)
-        statuses = [STATUS_CODE[r.status] for r in run.results]
+        statuses = [status_code(r.status) for r in run.results]
+        # accuracy uses success/total exactly as the paper (missing counts as wrong)
+        correct = sum(statuses)
         models.append({
             "name": label,
-            "correct": run.success_count,
-            "wrong": run.failure_count,
-            "missing": run.missing_count,
-            "acc": round(run.success_count / len(catalog) * 1000) / 10,
+            "correct": correct,
+            "wrong": len(catalog) - correct,
+            "acc": round(correct / len(catalog) * 1000) / 10,
             "s": statuses,
         })
 
     payload = {
         "totalTasks": len(catalog),
+        "categoryDefs": cat_defs,
         "tasks": tasks,
         "appSpans": app_spans,
         "models": models,
@@ -96,9 +149,15 @@ def main() -> None:
     OUTPUT.write_text("window.APPSIM_LEADERBOARD = " + data_json + ";\n", encoding="utf-8")
 
     print(f"Wrote {OUTPUT} ({OUTPUT.stat().st_size/1024:.0f} KB)")
-    print(f"{len(catalog)} tasks, {len(models)} models")
+    print(f"{len(catalog)} tasks ({num_count} numerical-reasoning), {len(models)} models")
+    zh = sum(1 for t in tasks if t["lang"] == "zh")
+    en = sum(1 for t in tasks if t["lang"] == "en")
+    print(f"  ZH tasks={zh}  EN tasks={en}")
+    from collections import Counter
+    cc = Counter(c for t in tasks for c in t["cats"])
+    print(f"  category counts: {dict(cc)}")
     for m in models:
-        print(f"  {m['acc']:5.1f}%  {m['correct']:3d}/{m['wrong']:3d}/{m['missing']:3d}  {m['name']}")
+        print(f"  {m['acc']:5.1f}%  {m['correct']:3d}/{m['wrong']:3d}  {m['name']}")
 
 
 if __name__ == "__main__":
