@@ -3,24 +3,263 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Leaderboard Coming Soon | AppSim-Bench</title>
+  <title>Leaderboard | AppSim-Bench</title>
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/index.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { background:#f7f8fb; }
+    .lb-section { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+    .lb-table-wrap { overflow-x:auto; }
+    table.lb { border-collapse: collapse; width:100%; font-size:0.85rem; background:#fff; }
+    table.lb th, table.lb td { padding:7px 9px; border-bottom:1px solid #eef1f5; text-align:center; white-space:nowrap; }
+    table.lb th { background:#f4f6f9; color:#626c7a; font-weight:700; font-size:0.78rem; position:sticky; top:0; }
+    table.lb td:first-child, table.lb th:first-child { text-align:left; }
+    table.lb tbody tr:hover { background:#fafbff; }
+    table.lb .best { font-weight:800; color:#166534; }
+    table.lb .second { text-decoration:underline; }
+    table.lb .grp { border-left:1px solid #d9dee8; }
+
+    /* Heatmap */
+    .heat-controls { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:14px 0; }
+    .heat-controls input[type=search]{ height:36px; padding:0 12px; border:1px solid #d9dee8; border-radius:6px; min-width:240px; flex:1 1 260px; }
+    .legend { display:flex; gap:16px; align-items:center; color:#626c7a; font-size:0.85rem; flex-wrap:wrap;}
+    .legend .sw { display:inline-block; width:14px; height:14px; border-radius:3px; vertical-align:-2px; margin-right:5px; border:1px solid transparent;}
+    .sw.ok{ background:#26a641;} .sw.no{ background:#f1b4b4; border-color:#d97777;} .sw.na{ background:#e5e7eb; border-color:#c5ccd6;}
+
+    .app-block { background:#fff; border:1px solid #d9dee8; border-radius:8px; margin-bottom:14px; overflow:hidden; }
+    .app-head { display:flex; justify-content:space-between; align-items:baseline; padding:9px 12px; background:#f4f6f9; border-bottom:1px solid #eef1f5; }
+    .app-head h3 { margin:0; font-size:0.95rem; }
+    .app-head span { color:#626c7a; font-size:0.8rem; }
+    .grid-scroll { overflow-x:auto; }
+    .heat-grid { display:grid; gap:3px; padding:10px 12px; width:max-content; }
+    .agent-name { font-size:0.78rem; font-weight:600; color:#1f2328; display:flex; align-items:center; height:16px; padding-right:10px; white-space:nowrap; position:sticky; left:0; background:#fff; z-index:2;}
+    .cell { width:16px; height:16px; border-radius:3px; cursor:pointer; border:1px solid transparent; }
+    .cell.ok{ background:#26a641;} .cell.no{ background:#f1b4b4; border-color:#e0a0a0;} .cell.na{ background:#e5e7eb; border-color:#c5ccd6;}
+    .cell:hover{ outline:2px solid #2563eb; outline-offset:1px; }
+    .col-head { position:sticky; left:0; background:#fff; z-index:2; font-size:0.72rem; color:#626c7a; height:16px; display:flex; align-items:center; }
+
+    .tip { position:fixed; z-index:50; max-width:340px; pointer-events:none; padding:8px 10px; border-radius:6px;
+           background:#111827; color:#f9fafb; font-size:0.8rem; box-shadow:0 8px 24px rgba(0,0,0,.18); opacity:0; transition:opacity .08s; }
+    .tip.on{ opacity:1; }
+    .tip .m{ color:#cbd5e1; margin-top:3px; }
+    .back-link{ display:inline-block; margin:1.2rem 0; }
+    .note{ color:#626c7a; font-size:0.78rem; }
+  </style>
 </head>
 <body>
-  <section class="hero is-fullheight is-light">
-    <div class="hero-body">
-      <div class="container has-text-centered">
-        <h1 class="title is-2">Leaderboard Coming Soon</h1>
-        <p class="subtitle is-5" style="margin-top:1rem;">
-          The AppSim-Bench leaderboard is being prepared and will be available here soon.
-        </p>
-        <a href="index.html" class="button is-rounded is-dark" style="margin-top:1.5rem;">
-          &larr; Back to project page
-        </a>
+  <section class="section">
+    <div class="lb-section">
+      <a href="index.html" class="back-link">&larr; Back to project page</a>
+      <h1 class="title is-2">AppSim-Bench Leaderboard</h1>
+      <p class="subtitle is-5">15 GUI agents evaluated on 557 tasks across 17 simulated apps.</p>
+
+      <!-- ===== Table 1: Main accuracy ===== -->
+      <h2 class="title is-4" style="margin-top:2rem;">Main Results</h2>
+      <p class="content">
+        Accuracy across overall performance, task length, and numerical-reasoning subtype.
+        <strong>ZH</strong>/<strong>EN</strong> are task-weighted accuracies over the Chinese and English app groups;
+        <em>#S</em> is the human-annotated step count. <span class="best">Bold</span> = best, <span class="second">underline</span> = second best per column.
+      </p>
+      <div class="lb-table-wrap">
+        <table class="lb">
+          <thead>
+            <tr>
+              <th rowspan="2">Agent Model</th>
+              <th colspan="3">Overall Benchmark</th>
+              <th colspan="3" class="grp">Task Length</th>
+              <th colspan="4" class="grp">Numerical Reasoning Subtype</th>
+            </tr>
+            <tr>
+              <th>Overall</th><th>ZH</th><th>EN</th>
+              <th class="grp">#S&le;5</th><th>#S 6&ndash;10</th><th>#S&ge;11</th>
+              <th class="grp">Cnt.</th><th>Arith.</th><th>Comp.</th><th>Thres.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Claude-Opus-4.7</td><td class="best">50.27%</td><td class="best">60.07%</td><td class="second">40.15%</td><td class="second grp">58.87%</td><td class="best">54.29%</td><td>28.15%</td><td class="best grp">52.31%</td><td class="second">55.56%</td><td class="best">52.00%</td><td class="best">42.86%</td></tr>
+            <tr><td>Gemini-3-Pro</td><td class="second">49.91%</td><td class="best">60.07%</td><td>39.42%</td><td class="grp">56.38%</td><td>52.86%</td><td class="best">33.33%</td><td class="second grp">46.15%</td><td>42.22%</td><td>49.33%</td><td>23.81%</td></tr>
+            <tr><td>GPT-5.5</td><td>49.73%</td><td>58.66%</td><td class="best">40.51%</td><td class="best grp">59.22%</td><td>52.14%</td><td>27.41%</td><td class="grp">44.62%</td><td class="best">57.78%</td><td class="best">52.00%</td><td class="second">33.33%</td></tr>
+            <tr><td>Gemini-3.1-Pro</td><td>49.55%</td><td class="second">59.36%</td><td>39.42%</td><td class="grp">56.74%</td><td>52.86%</td><td class="second">31.11%</td><td class="grp">43.08%</td><td>42.22%</td><td class="second">50.67%</td><td>23.81%</td></tr>
+            <tr><td>Doubao-Seed-1.6</td><td>39.14%</td><td>50.88%</td><td>27.01%</td><td class="grp">45.74%</td><td>43.57%</td><td>20.74%</td><td class="grp">23.08%</td><td>22.22%</td><td>36.00%</td><td>9.52%</td></tr>
+            <tr><td>GPT-5</td><td>33.39%</td><td>37.81%</td><td>28.83%</td><td class="grp">43.62%</td><td>31.43%</td><td>14.07%</td><td class="grp">27.69%</td><td>35.56%</td><td>40.00%</td><td>4.76%</td></tr>
+            <tr><td>Doubao-Seed-1.8</td><td>32.14%</td><td>34.63%</td><td>29.56%</td><td class="grp">43.26%</td><td>27.86%</td><td>13.33%</td><td class="grp">23.08%</td><td>31.11%</td><td>28.00%</td><td>4.76%</td></tr>
+            <tr><td>Qwen-3.6-Plus</td><td>31.42%</td><td>39.58%</td><td>22.99%</td><td class="grp">39.01%</td><td>31.43%</td><td>15.56%</td><td class="grp">23.08%</td><td>13.33%</td><td>28.00%</td><td>9.52%</td></tr>
+            <tr><td>Doubao-Seed-2.0</td><td>29.26%</td><td>36.40%</td><td>21.90%</td><td class="grp">37.94%</td><td>28.57%</td><td>11.85%</td><td class="grp">27.69%</td><td>28.89%</td><td>20.00%</td><td>14.29%</td></tr>
+            <tr><td>GPT-5.4</td><td>29.08%</td><td>34.63%</td><td>23.36%</td><td class="grp">38.30%</td><td>25.71%</td><td>13.33%</td><td class="grp">24.62%</td><td>24.44%</td><td>30.67%</td><td>9.52%</td></tr>
+            <tr><td>Qwen-3.6-Flash</td><td>28.19%</td><td>38.87%</td><td>17.15%</td><td class="grp">38.30%</td><td>25.71%</td><td>9.63%</td><td class="grp">20.00%</td><td>24.44%</td><td>26.67%</td><td>4.76%</td></tr>
+            <tr><td>Claude-Sonnet-4.6</td><td>27.29%</td><td>31.10%</td><td>23.36%</td><td class="grp">36.17%</td><td>27.86%</td><td>8.15%</td><td class="grp">29.23%</td><td>33.33%</td><td>26.67%</td><td>14.29%</td></tr>
+            <tr><td>Claude-Haiku-4.5</td><td>22.80%</td><td>22.61%</td><td>22.99%</td><td class="grp">34.04%</td><td>15.71%</td><td>6.67%</td><td class="grp">20.00%</td><td>22.22%</td><td>20.00%</td><td>9.52%</td></tr>
+            <tr><td>Claude-Sonnet-4.5</td><td>21.01%</td><td>24.03%</td><td>17.88%</td><td class="grp">31.91%</td><td>14.29%</td><td>5.19%</td><td class="grp">23.08%</td><td>26.67%</td><td>21.33%</td><td>14.29%</td></tr>
+            <tr><td>Gemini-2.5-Pro</td><td>17.24%</td><td>21.20%</td><td>13.14%</td><td class="grp">26.24%</td><td>14.29%</td><td>1.48%</td><td class="grp">23.08%</td><td>17.78%</td><td>17.33%</td><td>9.52%</td></tr>
+          </tbody>
+        </table>
       </div>
+      <p class="note" style="margin-top:6px;">Cnt./Arith./Comp./Thres. = counting, arithmetic, numeric comparison, threshold filtering. Subtypes are not mutually exclusive.</p>
+
+      <!-- ===== Table 2: Efficiency ===== -->
+      <h2 class="title is-4" style="margin-top:2.5rem;">Action Efficiency &amp; Budget Exhaustion</h2>
+      <p class="content">
+        AvgAct = average valid actions per task. ActOH = action overhead on successful tasks (valid actions / human reference steps).
+        Budg. Exh. = trajectories exhausting the 50-step budget. Budg. ACC = accuracy among those. Rep.&ge;3 / Rep.&ge;5 = budget-exhausted runs with &ge;3 / &ge;5 consecutive repeated actions.
+      </p>
+      <div class="lb-table-wrap">
+        <table class="lb">
+          <thead>
+            <tr>
+              <th>Agent Model</th><th>ACC &uarr;</th><th>AvgAct &darr;</th><th>ActOH &darr;</th>
+              <th>Budg. Exh. &darr;</th><th>Budg. ACC &uarr;</th><th>Rep.&ge;3 &darr;</th><th>Rep.&ge;5 &darr;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Claude-Opus-4.7</td><td>50.27%</td><td>14.01</td><td>1.98</td><td>33</td><td>0.00%</td><td>27 (81.82%)</td><td>20 (60.61%)</td></tr>
+            <tr><td>Gemini-3-Pro</td><td>49.91%</td><td>10.79</td><td>1.69</td><td>14</td><td>0.00%</td><td>5 (35.71%)</td><td>3 (21.43%)</td></tr>
+            <tr><td>GPT-5.5</td><td>49.73%</td><td>15.04</td><td>2.09</td><td>45</td><td>0.00%</td><td>27 (60.00%)</td><td>15 (33.33%)</td></tr>
+            <tr><td>Gemini-3.1-Pro</td><td>49.55%</td><td>10.69</td><td>1.80</td><td>19</td><td>10.53%</td><td>7 (36.84%)</td><td>3 (15.79%)</td></tr>
+            <tr><td>Doubao-Seed-1.6</td><td>39.14%</td><td>15.59</td><td>1.73</td><td>85</td><td>1.18%</td><td>74 (87.06%)</td><td>52 (61.18%)</td></tr>
+            <tr><td>GPT-5</td><td>33.39%</td><td>23.15</td><td>2.94</td><td>136</td><td>0.00%</td><td>105 (77.21%)</td><td>61 (44.85%)</td></tr>
+            <tr><td>Doubao-Seed-1.8</td><td>32.14%</td><td>9.71</td><td>1.60</td><td>44</td><td>0.00%</td><td>36 (81.82%)</td><td>27 (61.36%)</td></tr>
+            <tr><td>Qwen-3.6-Plus</td><td>31.42%</td><td>12.66</td><td>1.62</td><td>23</td><td>0.00%</td><td>11 (47.83%)</td><td>9 (39.13%)</td></tr>
+            <tr><td>Doubao-Seed-2.0</td><td>29.26%</td><td>10.76</td><td>1.81</td><td>46</td><td>0.00%</td><td>33 (71.74%)</td><td>28 (60.87%)</td></tr>
+            <tr><td>GPT-5.4</td><td>29.08%</td><td>10.88</td><td>1.56</td><td>16</td><td>0.00%</td><td>12 (75.00%)</td><td>7 (43.75%)</td></tr>
+            <tr><td>Qwen-3.6-Flash</td><td>28.19%</td><td>13.30</td><td>2.10</td><td>38</td><td>0.00%</td><td>27 (71.05%)</td><td>23 (60.53%)</td></tr>
+            <tr><td>Claude-Sonnet-4.6</td><td>27.29%</td><td>29.80</td><td>3.11</td><td>253</td><td>0.40%</td><td>222 (87.75%)</td><td>171 (67.59%)</td></tr>
+            <tr><td>Claude-Haiku-4.5</td><td>22.80%</td><td>31.63</td><td>4.07</td><td>221</td><td>0.00%</td><td>208 (94.12%)</td><td>162 (73.30%)</td></tr>
+            <tr><td>Claude-Sonnet-4.5</td><td>21.01%</td><td>23.31</td><td>3.30</td><td>93</td><td>3.23%</td><td>81 (87.10%)</td><td>55 (59.14%)</td></tr>
+            <tr><td>Gemini-2.5-Pro</td><td>17.24%</td><td>22.10</td><td>2.38</td><td>106</td><td>0.00%</td><td>74 (69.81%)</td><td>40 (37.74%)</td></tr>
+            <tr style="font-weight:700; background:#f4f6f9;"><td>Summary</td><td>34.03%</td><td>16.89</td><td>2.14</td><td>1172</td><td>0.60%</td><td>949 (80.97%)</td><td>676 (57.68%)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===== Heatmap ===== -->
+      <h2 class="title is-4" style="margin-top:2.5rem;">Per-Task Correctness Heatmap</h2>
+      <p class="content">
+        Each cell is one (model, task) pair. <span class="legend" style="display:inline-flex;"><span><span class="sw ok"></span>correct</span> <span><span class="sw no"></span>wrong</span> <span><span class="sw na"></span>no result</span></span>.
+        Rows are models (ordered by overall accuracy), grouped by app. Hover a cell for the task instruction.
+      </p>
+      <div class="heat-controls">
+        <input type="search" id="appFilter" placeholder="Filter by app name (e.g. WeChat, Amazon)…">
+        <label class="checkbox note"><input type="checkbox" id="reasonOnly"> Reasoning tasks only</label>
+      </div>
+      <div id="heatmap"></div>
     </div>
   </section>
+
+  <div class="tip" id="tip"></div>
+
+  <script src="static/data/leaderboard_data.js"></script>
+  <script>
+    (function () {
+      const D = window.APPSIM_LEADERBOARD;
+      const root = document.getElementById("heatmap");
+      const tip = document.getElementById("tip");
+      const appFilter = document.getElementById("appFilter");
+      const reasonOnly = document.getElementById("reasonOnly");
+
+      const cls = (v) => v === 1 ? "ok" : v === 0 ? "no" : "na";
+      const lbl = (v) => v === 1 ? "Correct" : v === 0 ? "Wrong" : "No result";
+
+      function render() {
+        const q = appFilter.value.trim().toLowerCase();
+        const ro = reasonOnly.checked;
+        root.innerHTML = "";
+
+        D.appSpans.forEach((span) => {
+          if (q && !span.label.toLowerCase().includes(q)) return;
+
+          // collect visible task indices for this app
+          const idxs = [];
+          for (let i = span.start; i <= span.end; i++) {
+            if (ro && !D.tasks[i].reason) continue;
+            idxs.push(i);
+          }
+          if (!idxs.length) return;
+
+          const block = document.createElement("div");
+          block.className = "app-block";
+          block.innerHTML =
+            `<div class="app-head"><h3>${span.label}</h3><span>${idxs.length} task${idxs.length>1?"s":""}</span></div>`;
+
+          const scroll = document.createElement("div");
+          scroll.className = "grid-scroll";
+          const grid = document.createElement("div");
+          grid.className = "heat-grid";
+          grid.style.gridTemplateColumns = `minmax(140px, max-content) repeat(${idxs.length}, 16px)`;
+
+          // header row: blank corner + task numbers (#localIndex)
+          const corner = document.createElement("div");
+          corner.className = "col-head";
+          corner.textContent = "Model";
+          grid.appendChild(corner);
+          idxs.forEach((i) => {
+            const c = document.createElement("div");
+            c.className = "col-head";
+            c.style.justifyContent = "center";
+            c.style.fontSize = "0.62rem";
+            c.textContent = "#" + D.tasks[i].i;
+            grid.appendChild(c);
+          });
+
+          // one row per model
+          D.models.forEach((m) => {
+            const name = document.createElement("div");
+            name.className = "agent-name";
+            name.textContent = m.name;
+            grid.appendChild(name);
+
+            idxs.forEach((i) => {
+              const v = m.s[i];
+              const cell = document.createElement("div");
+              cell.className = "cell " + cls(v);
+              cell.dataset.m = m.name;
+              cell.dataset.t = i;
+              grid.appendChild(cell);
+            });
+          });
+
+          scroll.appendChild(grid);
+          block.appendChild(scroll);
+          root.appendChild(block);
+        });
+
+        if (!root.children.length) {
+          root.innerHTML = '<p class="note" style="padding:14px;">No tasks match the current filter.</p>';
+        }
+      }
+
+      // delegated tooltip
+      root.addEventListener("mouseover", (e) => {
+        const cell = e.target.closest(".cell");
+        if (!cell) return;
+        const i = +cell.dataset.t;
+        const t = D.tasks[i];
+        const m = D.models.find((x) => x.name === cell.dataset.m);
+        const v = m.s[i];
+        const steps = t.steps != null ? `${t.steps} steps` : "";
+        const rs = t.reason ? " · reasoning" : "";
+        tip.innerHTML = `<strong>${cell.dataset.m} — ${lbl(v)}</strong>`
+          + `<div class="m">${t.app} #${t.i}${steps ? " · " + steps : ""}${rs}</div>`
+          + `<div class="m">${t.ins.replace(/</g,"&lt;")}</div>`;
+        tip.classList.add("on");
+      });
+      root.addEventListener("mousemove", (e) => {
+        const pad = 14;
+        const r = tip.getBoundingClientRect();
+        let left = e.clientX + 14, top = e.clientY + 14;
+        if (left + r.width + pad > window.innerWidth) left = e.clientX - r.width - 14;
+        if (top + r.height + pad > window.innerHeight) top = e.clientY - r.height - 14;
+        tip.style.left = Math.max(pad, left) + "px";
+        tip.style.top = Math.max(pad, top) + "px";
+      });
+      root.addEventListener("mouseout", (e) => {
+        if (e.target.closest(".cell")) tip.classList.remove("on");
+      });
+
+      appFilter.addEventListener("input", render);
+      reasonOnly.addEventListener("change", render);
+      render();
+    })();
+  </script>
 </body>
 </html>
