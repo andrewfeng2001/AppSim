@@ -137,7 +137,7 @@
       <!-- ===== Heatmap ===== -->
       <h2 class="title is-4" style="margin-top:2.5rem;">Per-Task Correctness Heatmap</h2>
       <p class="content">
-        Each cell is one (model, task) pair. <span class="legend" style="display:inline-flex;"><span><span class="sw ok"></span>correct</span> <span><span class="sw no"></span>wrong</span></span> (a missing result counts as wrong).
+        Each cell is one (model, task) pair. <span class="legend" style="display:inline-flex;"><span><span class="sw ok"></span>correct</span> <span><span class="sw no"></span>wrong</span></span>.
         Rows are models (ordered by overall accuracy), grouped by app. Hover a cell for the task instruction.
       </p>
       <div class="heat-controls">
@@ -175,7 +175,7 @@
 
   <div class="tip" id="tip"></div>
 
-  <script src="static/data/leaderboard_data.js"></script>
+  <script src="static/data/leaderboard_data.js?v=2"></script>
   <script>
     (function () {
       const D = window.APPSIM_LEADERBOARD;
@@ -198,11 +198,12 @@
       }
 
       function taskVisible(t) {
+        const cats = t.cats || [];
         if (langFilter.value !== "all" && t.lang !== langFilter.value) return false;
         if (stepFilter.value !== "all" && stepBucket(t.steps) !== stepFilter.value) return false;
         const cv = catFilter.value;
-        if (cv === "any" && t.cats.length === 0) return false;
-        if (cv !== "all" && cv !== "any" && !t.cats.includes(cv)) return false;
+        if (cv === "any" && cats.length === 0) return false;
+        if (cv !== "all" && cv !== "any" && !cats.includes(cv)) return false;
         return true;
       }
 
@@ -286,7 +287,7 @@
         const m = D.models.find((x) => x.name === cell.dataset.m);
         const v = m.s[i];
         const steps = t.steps != null ? `${t.steps} steps` : "";
-        const cats = t.cats.length ? " · " + t.cats.join(", ") : "";
+        const cats = (t.cats && t.cats.length) ? " · " + t.cats.join(", ") : "";
         const lang = t.lang === "zh" ? "ZH" : t.lang === "en" ? "EN" : "";
         tip.innerHTML = `<strong>${cell.dataset.m} — ${lbl(v)}</strong>`
           + `<div class="m">${t.app} #${t.i}${steps ? " · " + steps : ""}${lang ? " · " + lang : ""}${cats}</div>`
