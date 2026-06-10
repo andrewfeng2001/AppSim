@@ -3,236 +3,98 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+
   <!-- Primary Meta Tags -->
-  <!-- TODO: Replace with your paper title and author names -->
-  <meta name="title" content="PAPER_TITLE - AUTHOR_NAMES">
-  <!-- TODO: Write a compelling 150-160 character description of your research -->
-  <meta name="description" content="BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS">
-  <!-- TODO: Add 5-10 relevant keywords for your research area -->
-  <meta name="keywords" content="KEYWORD1, KEYWORD2, KEYWORD3, machine learning, computer vision, AI">
-  <!-- TODO: List all authors -->
-  <meta name="author" content="FIRST_AUTHOR_NAME, SECOND_AUTHOR_NAME">
+  <meta name="title" content="AppSim-Bench: Bridging Real-world Apps and Reproducible Evaluation for Mobile GUI Agents">
+  <meta name="description" content="AppSim-Bench is a reproducible benchmark of 557 tasks across 17 simulated Chinese and English mobile apps, evaluating mobile GUI agents with controllable backends and deterministic outcome verification.">
+  <meta name="keywords" content="mobile GUI agents, benchmark, reproducible evaluation, vision-language models, app simulation, LLM agents, AppSim-Bench">
+  <meta name="author" content="Anonymous">
   <meta name="robots" content="index, follow">
   <meta name="language" content="English">
-  
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
-  <!-- TODO: Replace with your institution or lab name -->
-  <meta property="og:site_name" content="INSTITUTION_OR_LAB_NAME">
-  <!-- TODO: Same as paper title above -->
-  <meta property="og:title" content="PAPER_TITLE">
-  <!-- TODO: Same as description above -->
-  <meta property="og:description" content="BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS">
-  <!-- TODO: Replace with your actual website URL -->
-  <meta property="og:url" content="https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE">
-  <!-- TODO: Create a 1200x630px preview image and update path -->
-  <meta property="og:image" content="https://YOUR_DOMAIN.com/static/images/social_preview.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="PAPER_TITLE - Research Preview">
-  <meta property="article:published_time" content="2024-01-01T00:00:00.000Z">
-  <meta property="article:author" content="FIRST_AUTHOR_NAME">
-  <meta property="article:section" content="Research">
-  <meta property="article:tag" content="KEYWORD1">
-  <meta property="article:tag" content="KEYWORD2">
+  <meta property="og:site_name" content="AppSim-Bench">
+  <meta property="og:title" content="AppSim-Bench: Bridging Real-world Apps and Reproducible Evaluation for Mobile GUI Agents">
+  <meta property="og:description" content="A reproducible benchmark of 557 tasks across 17 simulated mobile apps for evaluating mobile GUI agents.">
+  <meta property="og:url" content="https://andrewfeng2001.github.io/AppSim/">
+  <meta property="og:image" content="https://andrewfeng2001.github.io/AppSim/static/images/overview.png">
+  <meta property="og:image:alt" content="AppSim-Bench overview">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <!-- TODO: Replace with your lab/institution Twitter handle -->
-  <meta name="twitter:site" content="@YOUR_TWITTER_HANDLE">
-  <!-- TODO: Replace with first author's Twitter handle -->
-  <meta name="twitter:creator" content="@AUTHOR_TWITTER_HANDLE">
-  <!-- TODO: Same as paper title above -->
-  <meta name="twitter:title" content="PAPER_TITLE">
-  <!-- TODO: Same as description above -->
-  <meta name="twitter:description" content="BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS">
-  <!-- TODO: Same as social preview image above -->
-  <meta name="twitter:image" content="https://YOUR_DOMAIN.com/static/images/social_preview.png">
-  <meta name="twitter:image:alt" content="PAPER_TITLE - Research Preview">
+  <meta name="twitter:title" content="AppSim-Bench: Bridging Real-world Apps and Reproducible Evaluation for Mobile GUI Agents">
+  <meta name="twitter:description" content="A reproducible benchmark of 557 tasks across 17 simulated mobile apps for evaluating mobile GUI agents.">
+  <meta name="twitter:image" content="https://andrewfeng2001.github.io/AppSim/static/images/overview.png">
 
   <!-- Academic/Research Specific -->
-  <meta name="citation_title" content="PAPER_TITLE">
-  <meta name="citation_author" content="FIRST_AUTHOR_LAST, FIRST_AUTHOR_FIRST">
-  <meta name="citation_author" content="SECOND_AUTHOR_LAST, SECOND_AUTHOR_FIRST">
-  <meta name="citation_publication_date" content="2024">
-  <meta name="citation_conference_title" content="CONFERENCE_NAME">
-  <meta name="citation_pdf_url" content="https://YOUR_DOMAIN.com/static/pdfs/paper.pdf">
-  
-  <!-- Additional SEO -->
+  <meta name="citation_title" content="AppSim-Bench: Bridging Real-world Apps and Reproducible Evaluation for Mobile GUI Agents">
+  <meta name="citation_publication_date" content="2025">
+
   <meta name="theme-color" content="#2563eb">
   <meta name="msapplication-TileColor" content="#2563eb">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  
+
   <!-- Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://ajax.googleapis.com">
-  <link rel="preconnect" href="https://documentcloud.adobe.com">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
+  <title>AppSim-Bench | Reproducible Evaluation for Mobile GUI Agents</title>
 
-  <!-- TODO: Replace with your paper title and authors -->
-  <title>PAPER_TITLE - AUTHOR_NAMES | Academic Research</title>
-  
   <!-- Favicon and App Icons -->
   <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
   <link rel="apple-touch-icon" href="static/images/favicon.ico">
-  
+
   <!-- Critical CSS - Load synchronously -->
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/index.css">
-  
+
   <!-- Non-critical CSS - Load asynchronously -->
   <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  
-  <!-- Fallback for browsers that don't support preload -->
+
   <noscript>
     <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
     <link rel="stylesheet" href="static/css/bulma-slider.min.css">
     <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   </noscript>
-  
-  <!-- Fonts - Optimized loading -->
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Defer non-critical JavaScript -->
+
   <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script defer src="static/js/bulma-carousel.min.js"></script>
   <script defer src="static/js/bulma-slider.min.js"></script>
   <script defer src="static/js/index.js"></script>
-  
+
   <!-- Structured Data for Academic Papers -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ScholarlyArticle",
-    "headline": "PAPER_TITLE",
-    "description": "BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS",
-    "author": [
-      {
-        "@type": "Person",
-        "name": "FIRST_AUTHOR_NAME",
-        "affiliation": {
-          "@type": "Organization",
-          "name": "INSTITUTION_NAME"
-        }
-      },
-      {
-        "@type": "Person",
-        "name": "SECOND_AUTHOR_NAME",
-        "affiliation": {
-          "@type": "Organization",
-          "name": "INSTITUTION_NAME"
-        }
-      }
-    ],
-    "datePublished": "2024-01-01",
-    "publisher": {
-      "@type": "Organization",
-      "name": "CONFERENCE_OR_JOURNAL_NAME"
-    },
-    "url": "https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE",
-    "image": "https://YOUR_DOMAIN.com/static/images/social_preview.png",
-    "keywords": ["KEYWORD1", "KEYWORD2", "KEYWORD3", "machine learning", "computer vision"],
-    "abstract": "FULL_ABSTRACT_TEXT_HERE",
-    "citation": "BIBTEX_CITATION_HERE",
+    "headline": "AppSim-Bench: Bridging Real-world Apps and Reproducible Evaluation for Mobile GUI Agents",
+    "description": "A reproducible benchmark of 557 tasks across 17 simulated Chinese and English mobile apps for evaluating mobile GUI agents with controllable backends and deterministic outcome verification.",
+    "datePublished": "2025",
+    "url": "https://andrewfeng2001.github.io/AppSim/",
+    "image": "https://andrewfeng2001.github.io/AppSim/static/images/overview.png",
+    "keywords": ["mobile GUI agents", "benchmark", "reproducible evaluation", "vision-language models", "LLM agents"],
     "isAccessibleForFree": true,
-    "license": "https://creativecommons.org/licenses/by/4.0/",
-    "mainEntity": {
-      "@type": "WebPage",
-      "@id": "https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE"
-    },
-    "about": [
-      {
-        "@type": "Thing",
-        "name": "RESEARCH_AREA_1"
-      },
-      {
-        "@type": "Thing", 
-        "name": "RESEARCH_AREA_2"
-      }
-    ]
-  }
-  </script>
-  
-  <!-- Website/Organization Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "INSTITUTION_OR_LAB_NAME",
-    "url": "https://YOUR_INSTITUTION_WEBSITE.com",
-    "logo": "https://YOUR_DOMAIN.com/static/images/favicon.ico",
-    "sameAs": [
-      "https://twitter.com/YOUR_TWITTER_HANDLE",
-      "https://github.com/YOUR_GITHUB_USERNAME"
-    ]
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/"
   }
   </script>
 </head>
 <body>
 
-
   <!-- Scroll to Top Button -->
   <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
     <i class="fas fa-chevron-up"></i>
   </button>
-
-  <!-- More Works Dropdown -->
-  <div class="more-works-container">
-    <button class="more-works-btn" onclick="toggleMoreWorks()" title="View More Works from Our Lab">
-      <i class="fas fa-flask"></i>
-      More Works
-      <i class="fas fa-chevron-down dropdown-arrow"></i>
-    </button>
-    <div class="more-works-dropdown" id="moreWorksDropdown">
-      <div class="dropdown-header">
-        <h4>More Works from Our Lab</h4>
-        <button class="close-btn" onclick="toggleMoreWorks()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="works-list">
-        <!-- TODO: Replace with your lab's related works -->
-        <a href="https://arxiv.org/abs/PAPER_ID_1" class="work-item" target="_blank">
-          <div class="work-info">
-            <!-- TODO: Replace with actual paper title -->
-            <h5>Paper Title 1</h5>
-            <!-- TODO: Replace with brief description -->
-            <p>Brief description of the work and its main contribution.</p>
-            <!-- TODO: Replace with venue and year -->
-            <span class="work-venue">Conference/Journal 2024</span>
-          </div>
-          <i class="fas fa-external-link-alt"></i>
-        </a>
-        <!-- TODO: Add more related works or remove extra items -->
-        <a href="https://arxiv.org/abs/PAPER_ID_2" class="work-item" target="_blank">
-          <div class="work-info">
-            <h5>Paper Title 2</h5>
-            <p>Brief description of the work and its main contribution.</p>
-            <span class="work-venue">Conference/Journal 2023</span>
-          </div>
-          <i class="fas fa-external-link-alt"></i>
-        </a>
-        <a href="https://arxiv.org/abs/PAPER_ID_3" class="work-item" target="_blank">
-          <div class="work-info">
-            <h5>Paper Title 3</h5>
-            <p>Brief description of the work and its main contribution.</p>
-            <span class="work-venue">Conference/Journal 2023</span>
-          </div>
-          <i class="fas fa-external-link-alt"></i>
-        </a>
-      </div>
-    </div>
-  </div>
 
   <main id="main-content">
   <section class="hero">
@@ -240,71 +102,41 @@
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-            <!-- TODO: Replace with your paper title -->
-            <h1 class="title is-1 publication-title">Academic Project Page</h1>
+            <h1 class="title is-1 publication-title">AppSim-Bench</h1>
+            <h2 class="title is-4 publication-title" style="font-weight:500;margin-top:-0.5rem;">
+              Bridging Real-world Apps and Reproducible Evaluation for Mobile GUI Agents
+            </h2>
             <div class="is-size-5 publication-authors">
-              <!-- TODO: Replace with your paper authors and their personal links -->
-              <span class="author-block">
-                <a href="FIRST AUTHOR PERSONAL LINK" target="_blank">First Author</a><sup>*</sup>,</span>
-                <span class="author-block">
-                  <a href="SECOND AUTHOR PERSONAL LINK" target="_blank">Second Author</a><sup>*</sup>,</span>
-                  <span class="author-block">
-                    <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Third Author</a>
-                  </span>
-                  </div>
+              <span class="author-block">Anonymous Submission</span>
+            </div>
 
-                  <div class="is-size-5 publication-authors">
-                    <!-- TODO: Replace with your institution and conference/journal info -->
-                    <span class="author-block">Institution Name<br>Conference name and year</span>
-                    <!-- TODO: Remove this line if no equal contribution -->
-                    <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span>
-                  </div>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Under review</span>
+            </div>
 
-                  <div class="column has-text-centered">
-                    <div class="publication-links">
-                         <!-- TODO: Update with your arXiv paper ID -->
-                      <span class="link-block">
-                        <a href="https://arxiv.org/pdf/<ARXIV PAPER ID>.pdf" target="_blank"
-                        class="external-link button is-normal is-rounded is-dark">
-                        <span class="icon">
-                          <i class="fas fa-file-pdf"></i>
-                        </span>
-                        <span>Paper</span>
-                      </a>
-                    </span>
-
-                    <!-- TODO: Add your supplementary material PDF or remove this section -->
-                    <span class="link-block">
-                      <a href="static/pdfs/supplementary_material.pdf" target="_blank"
-                      class="external-link button is-normal is-rounded is-dark">
-                      <span class="icon">
-                        <i class="fas fa-file-pdf"></i>
-                      </span>
-                      <span>Supplementary</span>
-                    </a>
-                  </span>
-
-                  <!-- TODO: Replace with your GitHub repository URL -->
-                  <span class="link-block">
-                    <a href="https://github.com/YOUR REPO HERE" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
-                  </a>
-                </span>
-
-                <!-- TODO: Update with your arXiv paper ID -->
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- Paper (coming soon) -->
                 <span class="link-block">
-                  <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank"
+                  <a href="paper.html" target="_blank"
                   class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
-                    <i class="ai ai-arxiv"></i>
+                    <i class="fas fa-file-pdf"></i>
                   </span>
-                  <span>arXiv</span>
+                  <span>Paper</span>
                 </a>
               </span>
+
+              <!-- Code -->
+              <span class="link-block">
+                <a href="https://github.com/andrewfeng2001/AppSim" target="_blank"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Code</span>
+              </a>
+            </span>
             </div>
           </div>
         </div>
@@ -314,23 +146,19 @@
 </section>
 
 
-<!-- Teaser video-->
+<!-- Teaser / Overview figure -->
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <!-- TODO: Replace with your teaser video -->
-      <video poster="" id="tree" autoplay controls muted loop height="100%" preload="metadata">
-        <!-- TODO: Add your video file path here -->
-        <source src="static/videos/banner_video.mp4" type="video/mp4">
-      </video>
-      <!-- TODO: Replace with your video description -->
+      <img src="static/images/overview.png" alt="AppSim-Bench overview: inconsistent live-app states vs. controllable simulated apps" loading="eager"/>
       <h2 class="subtitle has-text-centered">
-        Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus. 
+        <strong>(a)</strong> In live commercial apps, the same task can face different states across time or devices (e.g. shifting search suggestions or cart availability), making fair comparison hard.
+        <strong>(b)</strong> AppSim-Bench replaces live apps with 17 controllable simulated apps covering 557 tasks, removing recommendation- and content-driven evaluation noise.
       </h2>
     </div>
   </div>
 </section>
-<!-- End teaser video -->
+<!-- End teaser -->
 
 <!-- Paper abstract -->
 <section class="section hero is-light">
@@ -339,9 +167,14 @@
       <div class="column is-four-fifths">
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
-          <!-- TODO: Replace with your paper abstract -->
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper tellus sed ante aliquam tempus. Etiam porttitor urna feugiat nibh elementum, et tempor dolor mattis. Donec accumsan enim augue, a vulputate nisi sodales sit amet. Proin bibendum ex eget mauris cursus euismod nec et nibh. Maecenas ac gravida ante, nec cursus dui. Vivamus purus nibh, placerat ac purus eget, sagittis vestibulum metus. Sed vestibulum bibendum lectus gravida commodo. Pellentesque auctor leo vitae sagittis suscipit.
+            Mobile GUI agents can execute tasks from natural-language instructions, but their evaluation remains difficult to make both realistic and reproducible. Existing benchmarks typically trade off these goals: simplified apps lack real-world mobile complexity, whereas live commercial apps introduce uncontrolled variation from recommendations, advertisements, accounts, and changing content.
+          </p>
+          <p>
+            We propose <strong>AppSim-Bench</strong>, which addresses this trade-off through controllable simulated apps that preserve task-relevant interaction logic while supporting deterministic evaluation. Built through a coding-agent-assisted and human-verified workflow, it contains <strong>557 tasks across 17 high-frequency Chinese and English apps</strong>. Its controllable backend data and outcome-based verification remove major sources of environmental stochasticity, enabling reproducible cross-model comparison.
+          </p>
+          <p>
+            Evaluating <strong>15 GUI agents</strong>, we find that autonomous mobile execution remains far from solved. The best model completes only <strong>50.27%</strong> of tasks, and <strong>29.08%</strong> of tasks are not solved by any agent. Further analysis shows that failures concentrate in longer workflows, numerical reasoning tasks, and inefficient trajectories marked by high action overhead and budget exhaustion.
           </p>
         </div>
       </div>
@@ -351,123 +184,124 @@
 <!-- End paper abstract -->
 
 
-<!-- Image carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
-       <div class="item">
-        <!-- TODO: Replace with your research result images -->
-        <img src="static/images/carousel1.jpg" alt="First research result visualization" loading="lazy"/>
-        <!-- TODO: Replace with description of this result -->
-        <h2 class="subtitle has-text-centered">
-          First image description.
+<!-- How it works / pipeline -->
+<section class="section hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">How AppSim-Bench is Built</h2>
+        <div class="content has-text-justified">
+          <p>
+            AppSim-Bench has three components: <strong>Tasks</strong> described in natural language, <strong>Simulated Apps</strong> with controllable backend data, and <strong>Automated Evaluation</strong> via deterministic outcome verification. Simulated apps are produced through a human-led, coding-agent-assisted workflow: developers specify task requirements, data schemas, page hierarchies, and reference screenshots; coding agents generate candidate implementations; and human developers inspect, run, and correct them until the task-relevant UI flows and backend states match the specification.
+          </p>
+        </div>
+        <img src="static/images/pipeline.png" alt="AppSim-Bench construction pipeline: task construction, simulated app construction, and automated evaluation" loading="lazy"/>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End pipeline -->
+
+
+<!-- Dataset statistics -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Benchmark at a Glance</h2>
+        <img src="static/images/dataset.png" alt="AppSim-Bench statistics: app coverage, task-length distribution, and numerical reasoning subtypes" loading="lazy"/>
+        <h2 class="subtitle has-text-centered" style="margin-top:1rem;">
+          <strong>(a–b)</strong> Task coverage across 9 Chinese and 8 English apps. <strong>(c)</strong> 283 Chinese vs. 274 English tasks. <strong>(d)</strong> Distribution by human-annotated reference steps (≤5, 6–10, ≥11). <strong>(e)</strong> 183 numerical-reasoning tasks split into counting, arithmetic, comparison, and threshold-filtering subtypes.
         </h2>
       </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel2.jpg" alt="Second research result visualization" loading="lazy"/>
-        <h2 class="subtitle has-text-centered">
-          Second image description.
+    </div>
+  </div>
+</section>
+<!-- End dataset statistics -->
+
+
+<!-- Leaderboard -->
+<section class="section hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Main Results</h2>
+        <div class="content has-text-justified">
+          <p>
+            Overall accuracy of 15 agents on AppSim-Bench, with task-weighted accuracy on the Chinese (ZH) and English (EN) app groups, and accuracy by task length (<em>#S</em> = human-annotated step count). Even the strongest model completes only about half of the tasks, and performance drops sharply on the longest workflows (≥11 steps).
+          </p>
+        </div>
+        <div class="table-container">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="font-size:0.9rem;">
+            <thead>
+              <tr>
+                <th>Agent Model</th>
+                <th>Overall</th>
+                <th>ZH Apps</th>
+                <th>EN Apps</th>
+                <th>#S ≤ 5</th>
+                <th>#S 6–10</th>
+                <th>#S ≥ 11</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Claude-Opus-4.7</td><td><strong>50.27%</strong></td><td><strong>60.07%</strong></td><td>40.15%</td><td>58.87%</td><td><strong>54.29%</strong></td><td>28.15%</td></tr>
+              <tr><td>Gemini-3-Pro</td><td>49.91%</td><td><strong>60.07%</strong></td><td>39.42%</td><td>56.38%</td><td>52.86%</td><td><strong>33.33%</strong></td></tr>
+              <tr><td>GPT-5.5</td><td>49.73%</td><td>58.66%</td><td><strong>40.51%</strong></td><td><strong>59.22%</strong></td><td>52.14%</td><td>27.41%</td></tr>
+              <tr><td>Gemini-3.1-Pro</td><td>49.55%</td><td>59.36%</td><td>39.42%</td><td>56.74%</td><td>52.86%</td><td>31.11%</td></tr>
+              <tr><td>Doubao-Seed-1.6</td><td>39.14%</td><td>50.88%</td><td>27.01%</td><td>45.74%</td><td>43.57%</td><td>20.74%</td></tr>
+              <tr><td>GPT-5</td><td>33.39%</td><td>37.81%</td><td>28.83%</td><td>43.62%</td><td>31.43%</td><td>14.07%</td></tr>
+              <tr><td>Doubao-Seed-1.8</td><td>32.14%</td><td>34.63%</td><td>29.56%</td><td>43.26%</td><td>27.86%</td><td>13.33%</td></tr>
+              <tr><td>Qwen-3.6-Plus</td><td>31.42%</td><td>39.58%</td><td>22.99%</td><td>39.01%</td><td>31.43%</td><td>15.56%</td></tr>
+              <tr><td>Doubao-Seed-2.0</td><td>29.26%</td><td>36.40%</td><td>21.90%</td><td>37.94%</td><td>28.57%</td><td>11.85%</td></tr>
+              <tr><td>GPT-5.4</td><td>29.08%</td><td>34.63%</td><td>23.36%</td><td>38.30%</td><td>25.71%</td><td>13.33%</td></tr>
+              <tr><td>Qwen-3.6-Flash</td><td>28.19%</td><td>38.87%</td><td>17.15%</td><td>38.30%</td><td>25.71%</td><td>9.63%</td></tr>
+              <tr><td>Claude-Sonnet-4.6</td><td>27.29%</td><td>31.10%</td><td>23.36%</td><td>36.17%</td><td>27.86%</td><td>8.15%</td></tr>
+              <tr><td>Claude-Haiku-4.5</td><td>22.80%</td><td>22.61%</td><td>22.99%</td><td>34.04%</td><td>15.71%</td><td>6.67%</td></tr>
+              <tr><td>Claude-Sonnet-4.5</td><td>21.01%</td><td>24.03%</td><td>17.88%</td><td>31.91%</td><td>14.29%</td><td>5.19%</td></tr>
+              <tr><td>Gemini-2.5-Pro</td><td>17.24%</td><td>21.20%</td><td>13.14%</td><td>26.24%</td><td>14.29%</td><td>1.48%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="is-size-7 has-text-grey">Bold marks the best value in each column. ZH/EN are task-weighted accuracies over the Chinese and English app groups.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End leaderboard -->
+
+
+<!-- Analysis figures -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Analysis</h2>
+
+    <div class="columns is-centered" style="margin-top:1rem;">
+      <div class="column is-half has-text-centered">
+        <img src="static/images/realism.png" alt="Blind human evaluation of visual realism" loading="lazy"/>
+        <h2 class="subtitle has-text-centered" style="margin-top:0.75rem;">
+          <strong>Visual realism.</strong> In a blind A/B study, annotators were undecided on 46.3% of static screenshots and mistook the simulator for the real app in 19.0% of decided cases.
         </h2>
       </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel3.jpg" alt="Third research result visualization" loading="lazy"/>
-        <h2 class="subtitle has-text-centered">
-         Third image description.
-       </h2>
-     </div>
-     <div class="item">
-      <!-- Your image here -->
-      <img src="static/images/carousel4.jpg" alt="Fourth research result visualization" loading="lazy"/>
-      <h2 class="subtitle has-text-centered">
-        Fourth image description.
-      </h2>
+      <div class="column is-half has-text-centered">
+        <img src="static/images/solved_by_k.png" alt="Distribution of tasks solved by k agents" loading="lazy"/>
+        <h2 class="subtitle has-text-centered" style="margin-top:0.75rem;">
+          <strong>Shared blind spots.</strong> 29.08% of tasks are solved by no agent, and only 2.15% are solved by all, exposing systematic failure cases.
+        </h2>
+      </div>
     </div>
-  </div>
-</div>
-</div>
-</section>
-<!-- End image carousel -->
 
-
-
-
-<!-- Youtube video -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <!-- Paper video. -->
-      <h2 class="title is-3">Video Presentation</h2>
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          
-          <div class="publication-video">
-            <!-- TODO: Replace with your YouTube video ID -->
-            <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-          </div>
-        </div>
+    <div class="columns is-centered has-text-centered" style="margin-top:1rem;">
+      <div class="column is-full">
+        <img src="static/images/efficiency.png" alt="Accuracy vs. efficiency relationships across agents" loading="lazy"/>
+        <h2 class="subtitle has-text-centered" style="margin-top:0.75rem;">
+          <strong>Accuracy vs. efficiency.</strong> Accuracy is negatively correlated with average valid actions, action overhead, and budget exhaustion: low accuracy comes with longer, less human-like trajectories.
+        </h2>
       </div>
     </div>
   </div>
 </section>
-<!-- End youtube video -->
-
-
-<!-- Video carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-3">Another Carousel</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-video1">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video1" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel1.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video2">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel2.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video3">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video3" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel3.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End video carousel -->
-
-
-
-
-
-
-<!-- Paper poster -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title">Poster</h2>
-
-      <!-- TODO: Replace with your poster PDF -->
-      <iframe  src="static/pdfs/sample.pdf" width="100%" height="550">
-          </iframe>
-        
-      </div>
-    </div>
-  </section>
-<!--End paper poster -->
-
+<!-- End analysis figures -->
 
 
 <!--BibTex citation -->
@@ -480,12 +314,12 @@
           <span class="copy-text">Copy</span>
         </button>
       </div>
-      <pre id="bibtex-code"><code>@article{YourPaperKey2024,
-  title={Your Paper Title Here},
-  author={First Author and Second Author and Third Author},
-  journal={Conference/Journal Name},
-  year={2024},
-  url={https://your-domain.com/your-project-page}
+      <pre id="bibtex-code"><code>@misc{appsimbench2025,
+  title        = {AppSim-Bench: Bridging Real-world Apps and Reproducible Evaluation for Mobile GUI Agents},
+  author       = {Anonymous},
+  year         = {2025},
+  note         = {Under review},
+  url          = {https://andrewfeng2001.github.io/AppSim/}
 }</code></pre>
     </div>
 </section>
@@ -497,24 +331,17 @@
     <div class="columns is-centered">
       <div class="column is-8">
         <div class="content">
-
           <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
             Commons Attribution-ShareAlike 4.0 International License</a>.
           </p>
-
         </div>
       </div>
     </div>
   </div>
 </footer>
 
-<!-- Statcounter tracking code -->
-  
-<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
-
-    <!-- End of Statcounter Code -->
-
+  </main>
   </body>
   </html>
