@@ -84,8 +84,64 @@
     "license": "https://creativecommons.org/licenses/by-sa/4.0/"
   }
   </script>
+  <style>
+    /* Left sidebar navigation */
+    .side-nav {
+      position: fixed;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid #d9dee8;
+      border-left: none;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      max-height: 80vh;
+      overflow-y: auto;
+      transition: opacity 0.2s;
+    }
+    .side-nav a {
+      display: block;
+      padding: 6px 16px 6px 12px;
+      font-size: 0.78rem;
+      color: #4b5563;
+      text-decoration: none;
+      white-space: nowrap;
+      border-left: 3px solid transparent;
+      transition: all 0.15s;
+    }
+    .side-nav a:hover {
+      color: #1f2328;
+      background: #f4f6f9;
+    }
+    .side-nav a.active {
+      color: #2563eb;
+      border-left-color: #2563eb;
+      font-weight: 600;
+      background: #eef2ff;
+    }
+    @media (max-width: 1200px) {
+      .side-nav { display: none; }
+    }
+  </style>
 </head>
 <body>
+
+  <!-- Left sidebar navigation -->
+  <nav class="side-nav" id="sideNav">
+    <a href="#main-content">Top</a>
+    <a href="#abstract">Abstract</a>
+    <a href="#apps">Apps</a>
+    <a href="#method">Method</a>
+    <a href="#statistics">Statistics</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#results">Results</a>
+    <a href="#realism">Realism</a>
+    <a href="#analysis">Analysis</a>
+    <a href="#BibTeX">BibTeX</a>
+  </nav>
 
   <!-- Scroll to Top Button -->
   <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
@@ -168,7 +224,7 @@
 <!-- End teaser -->
 
 <!-- Paper abstract -->
-<section class="section hero is-light">
+<section class="section hero is-light" id="abstract">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
@@ -192,7 +248,7 @@
 
 
 <!-- App overview table -->
-<section class="section hero">
+<section class="section hero" id="apps">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
@@ -256,7 +312,7 @@
 
 
 <!-- How it works / pipeline -->
-<section class="section hero">
+<section class="section hero" id="method">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
@@ -275,7 +331,7 @@
 
 
 <!-- Dataset statistics -->
-<section class="section hero is-light">
+<section class="section hero is-light" id="statistics">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
@@ -292,7 +348,7 @@
 
 
 <!-- App gallery -->
-<section class="section hero">
+<section class="section hero" id="gallery">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
@@ -347,7 +403,7 @@
 
 
 <!-- Leaderboard -->
-<section class="section hero">
+<section class="section hero" id="results">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
@@ -398,7 +454,7 @@
 
 
 <!-- How realistic is AppSim-Bench -->
-<section class="section hero">
+<section class="section hero" id="realism">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
@@ -441,7 +497,7 @@
 
 
 <!-- Analysis figures -->
-<section class="section hero is-light">
+<section class="section hero is-light" id="analysis">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Analysis</h2>
 
@@ -503,5 +559,27 @@
 </footer>
 
   </main>
+
+  <script>
+    // Scroll-spy for side nav
+    (function() {
+      const nav = document.getElementById("sideNav");
+      if (!nav) return;
+      const links = nav.querySelectorAll("a[href^='#']");
+      const sections = Array.from(links).map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+      function update() {
+        let current = "";
+        const offset = window.innerHeight * 0.3;
+        sections.forEach(sec => {
+          if (sec.getBoundingClientRect().top <= offset) current = sec.id;
+        });
+        links.forEach(a => {
+          a.classList.toggle("active", a.getAttribute("href") === "#" + current);
+        });
+      }
+      window.addEventListener("scroll", update, { passive: true });
+      update();
+    })();
+  </script>
   </body>
   </html>

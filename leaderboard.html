@@ -72,9 +72,58 @@
     .note{ color:#626c7a; font-size:0.78rem; }
     .heat-controls select{ height:36px; padding:0 8px; border:1px solid #d9dee8; border-radius:6px; background:#fff; }
     .heat-controls label.sel{ display:inline-flex; flex-direction:column; gap:2px; font-size:0.72rem; color:#626c7a; }
+
+    /* Left sidebar navigation */
+    .side-nav {
+      position: fixed;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid #d9dee8;
+      border-left: none;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .side-nav a {
+      display: block;
+      padding: 6px 16px 6px 12px;
+      font-size: 0.78rem;
+      color: #4b5563;
+      text-decoration: none;
+      white-space: nowrap;
+      border-left: 3px solid transparent;
+      transition: all 0.15s;
+    }
+    .side-nav a:hover {
+      color: #1f2328;
+      background: #f4f6f9;
+    }
+    .side-nav a.active {
+      color: #2563eb;
+      border-left-color: #2563eb;
+      font-weight: 600;
+      background: #eef2ff;
+    }
+    @media (max-width: 1200px) {
+      .side-nav { display: none; }
+    }
   </style>
 </head>
 <body>
+  <!-- Left sidebar navigation -->
+  <nav class="side-nav" id="sideNav">
+    <a href="#sec-main">Main Results</a>
+    <a href="#sec-efficiency">Efficiency</a>
+    <a href="#sec-app-model">App × Model</a>
+    <a href="#sec-heatmap">Per-Task Heatmap</a>
+    <a href="index.html" style="margin-top:8px; border-top:1px solid #eef1f5; padding-top:8px;">← Home</a>
+  </nav>
+
   <section class="section">
     <div class="lb-section">
       <a href="index.html" class="back-link">&larr; Back to project page</a>
@@ -82,7 +131,7 @@
       <p class="subtitle is-5">15 GUI agents evaluated on 557 tasks across 17 simulated apps.</p>
 
       <!-- ===== Table 1: Main accuracy ===== -->
-      <h2 class="title is-4" style="margin-top:2rem;">Main Results</h2>
+      <h2 class="title is-4" style="margin-top:2rem;" id="sec-main">Main Results</h2>
       <p class="content">
         Accuracy across overall performance, task length, and numerical-reasoning subtype.
         <strong>ZH</strong>/<strong>EN</strong> are task-weighted accuracies over the Chinese and English app groups;
@@ -125,7 +174,7 @@
       <p class="note" style="margin-top:6px;">Cnt./Arith./Comp./Thres. = counting, arithmetic, numeric comparison, threshold filtering. Subtypes are not mutually exclusive.</p>
 
       <!-- ===== Table 2: Efficiency ===== -->
-      <h2 class="title is-4" style="margin-top:2.5rem;">Action Efficiency &amp; Budget Exhaustion</h2>
+      <h2 class="title is-4" style="margin-top:2.5rem;" id="sec-efficiency">Action Efficiency &amp; Budget Exhaustion</h2>
       <p class="content">
         AvgAct = average valid actions per task. ActOH = action overhead on successful tasks (valid actions / human reference steps).
         Budg. Exh. = trajectories exhausting the 50-step budget. Budg. ACC = accuracy among those. Rep.&ge;3 / Rep.&ge;5 = budget-exhausted runs with &ge;3 / &ge;5 consecutive repeated actions.
@@ -160,7 +209,7 @@
       </div>
 
       <!-- ===== App × Model Accuracy Heatmap ===== -->
-      <h2 class="title is-4" style="margin-top:2.5rem;">App × Model Accuracy Heatmap</h2>
+      <h2 class="title is-4" style="margin-top:2.5rem;" id="sec-app-model">App × Model Accuracy Heatmap</h2>
       <p class="content">
         Each cell shows one model's accuracy on one app. Deeper green = higher accuracy, deeper red = lower accuracy.
         Click any cell to see the per-task correctness grid for that (model, app) pair.
@@ -180,7 +229,7 @@
       </div>
 
       <!-- ===== Heatmap ===== -->
-      <h2 class="title is-4" style="margin-top:2.5rem;">Per-Task Correctness Heatmap</h2>
+      <h2 class="title is-4" style="margin-top:2.5rem;" id="sec-heatmap">Per-Task Correctness Heatmap</h2>
       <p class="content">
         Each cell is one (model, task) pair. <span class="legend" style="display:inline-flex;"><span><span class="sw ok"></span>correct</span> <span><span class="sw no"></span>wrong</span></span>.
         Rows are models (ordered by overall accuracy), grouped by app. Hover a cell for the task instruction.
@@ -533,6 +582,27 @@
       stepFilter.addEventListener("change", render);
       catFilter.addEventListener("change", render);
       render();
+    })();
+  </script>
+  <script>
+    // Scroll-spy for side nav
+    (function() {
+      const nav = document.getElementById("sideNav");
+      if (!nav) return;
+      const links = nav.querySelectorAll("a[href^='#']");
+      const sections = Array.from(links).map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+      function update() {
+        let current = "";
+        const offset = window.innerHeight * 0.3;
+        sections.forEach(sec => {
+          if (sec.getBoundingClientRect().top <= offset) current = sec.id;
+        });
+        links.forEach(a => {
+          a.classList.toggle("active", a.getAttribute("href") === "#" + current);
+        });
+      }
+      window.addEventListener("scroll", update, { passive: true });
+      update();
     })();
   </script>
 </body>
