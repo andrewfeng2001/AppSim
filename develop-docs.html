@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Developer Docs | AppSim-Bench</title>
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { background:#f7f8fb; }
+    .doc-section { max-width: 860px; margin: 0 auto; padding: 0 1.5rem; }
+    .doc-section h2 { margin-top: 2.5rem; }
+    .doc-section h3 { margin-top: 1.8rem; }
+    .doc-section p, .doc-section li { line-height: 1.7; }
+    .doc-section code { background:#eef1f5; padding:2px 6px; border-radius:4px; font-size:0.88em; }
+    .doc-section pre { background:#1f2328; color:#e6edf3; padding:16px; border-radius:8px; overflow-x:auto; font-size:0.85rem; line-height:1.5; }
+    .doc-section pre code { background:none; padding:0; color:inherit; }
+    .prereq { background:#fffbeb; border:1px solid #fcd34d; border-radius:8px; padding:14px 18px; margin:1rem 0; }
+    .prereq strong { color:#92400e; }
+    .tip-box { background:#eff6ff; border:1px solid #93c5fd; border-radius:8px; padding:14px 18px; margin:1rem 0; }
+    .tip-box strong { color:#1d4ed8; }
+    .warn-box { background:#fef2f2; border:1px solid #fca5a5; border-radius:8px; padding:14px 18px; margin:1rem 0; }
+    .warn-box strong { color:#991b1b; }
+    .back-link { display:inline-block; margin:1.2rem 0; }
+    .step-num { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; background:#2563eb; color:#fff; font-weight:700; font-size:0.85rem; margin-right:8px; }
+    /* Left sidebar navigation */
+    .side-nav { position:fixed; left:0; top:50%; transform:translateY(-50%); z-index:100; background:rgba(255,255,255,0.95); border:1px solid #d9dee8; border-left:none; border-radius:0 8px 8px 0; padding:12px 0; box-shadow:0 4px 16px rgba(0,0,0,0.08); max-height:80vh; overflow-y:auto; }
+    .side-nav a { display:block; padding:6px 16px 6px 12px; font-size:0.78rem; color:#4b5563; text-decoration:none; white-space:nowrap; border-left:3px solid transparent; transition:all 0.15s; }
+    .side-nav a:hover { color:#1f2328; background:#f4f6f9; }
+    .side-nav a.active { color:#2563eb; border-left-color:#2563eb; font-weight:600; background:#eef2ff; }
+    @media (max-width:1200px) { .side-nav { display:none; } }
+  </style>
+</head>
+<body>
+
+  <nav class="side-nav" id="sideNav">
+    <a href="#sec-prereq">Prerequisites</a>
+    <a href="#sec-overview">Overview</a>
+    <a href="#sec-principles">Principles</a>
+    <a href="#sec-setup">1. Project Setup</a>
+    <a href="#sec-tasks">2. Task Design</a>
+    <a href="#sec-pages">3. Page Tree</a>
+    <a href="#sec-data">4. Data Modeling</a>
+    <a href="#sec-dev">5. Iterative Dev</a>
+    <a href="index.html" style="margin-top:8px; border-top:1px solid #eef1f5; padding-top:8px;">← Home</a>
+  </nav>
+
+  <section class="section">
+    <div class="doc-section">
+      <a href="index.html" class="back-link">&larr; Back to project page</a>
+      <h1 class="title is-2">AppSim-Bench Developer Guide</h1>
+      <p class="subtitle is-5">How to build a simulated app using AI-assisted development (Claude Code).</p>
+
+      <!-- Prerequisites -->
+      <div class="prereq" id="sec-prereq">
+        <strong>Prerequisites</strong>
+        <ul style="margin-top:6px;">
+          <li><strong>Claude Code (CC)</strong> installed and configured.</li>
+          <li><strong>Android Studio</strong> installed with a working emulator or connected device.</li>
+          <li><strong>Git</strong> configured with push access to your GitHub repository.</li>
+          <li>The <strong>Android template project</strong> (<code>android_template.7z</code>) — a blank Kotlin/Compose starter project provided by AppSim-Bench.</li>
+        </ul>
+      </div>
+
+      <!-- Overview -->
+      <h2 class="title is-4" id="sec-overview">Overview</h2>
+      <p>
+        Each simulated app in AppSim-Bench is a standalone Android project that reproduces
+        task-relevant UI flows from a real commercial app, with controllable backend data.
+        The development workflow is <strong>human-led, AI-assisted</strong>: you specify what to build,
+        and a coding agent (Claude Code) generates the implementation. You then inspect, run, and correct
+        iteratively until the app matches the benchmark specification.
+      </p>
+      <p>The high-level pipeline is:</p>
+      <ol>
+        <li>Set up the template project in a Git repository.</li>
+        <li>Design your tasks — these determine which pages and features are needed.</li>
+        <li>Define a page tree (navigation structure).</li>
+        <li>Model the data structures required for task verification.</li>
+        <li>Develop iteratively: describe one page at a time, provide a reference screenshot, let CC implement, verify, and commit.</li>
+      </ol>
+
+      <!-- Principles -->
+      <h2 class="title is-4" id="sec-principles">Core Principles</h2>
+      <div class="tip-box">
+        <strong>Principle 1 — Always verify manually.</strong><br>
+        After every AI-generated change, build and run the project on an emulator. If anything is broken, feed the error back to CC and let it fix the issue before moving on.
+      </div>
+      <div class="tip-box">
+        <strong>Principle 2 — Commit frequently.</strong><br>
+        Before asking CC to make a new change, commit the current working state. This ensures you can always roll back if the AI introduces regressions.
+      </div>
+      <div class="warn-box">
+        <strong>Git saves your progress.</strong> Committing often is cheap — losing a working state is expensive.
+      </div>
+
+      <!-- Step 1: Project setup -->
+      <h2 class="title is-4" id="sec-setup"><span class="step-num">1</span>Project Setup</h2>
+      <ol>
+        <li>Create a new empty repository on GitHub.</li>
+        <li>Clone it locally and extract the Android template into the repo root.</li>
+        <li>Push the initial template commit.</li>
+      </ol>
+      <p>Create a file called <code>requirements.md</code> at the project root. This file is where you describe development instructions for CC throughout the process.</p>
+      <p>As your first task, ask CC to rename the project from the default (<code>test05</code>) to a meaningful name, e.g. <code>MyWechat</code>:</p>
+<pre><code>Rename the project from "test05" to "MyWechat".
+Replace all references to test05 with MyWechat. Build successfully before handing off.</code></pre>
+      <p>Use <strong>Plan mode</strong> in CC: ask it to read <code>requirements.md</code>, produce a plan, review the plan, then let it execute.</p>
+
+      <!-- Step 2: Task design -->
+      <h2 class="title is-4" id="sec-tasks"><span class="step-num">2</span>Task Design</h2>
+      <p>
+        Tasks are the benchmark's atomic units. Each task is a natural-language instruction
+        that a GUI agent should be able to complete (e.g., "Send a message to Zhang Xiaoming saying hello").
+        The key insight is:
+      </p>
+      <div class="tip-box">
+        <strong>Task design defines your development scope.</strong><br>
+        Once you know which tasks the benchmark covers, you know exactly which pages must
+        be fully interactive, which only need a static entry point, and which can be omitted entirely.
+      </div>
+      <p>For example, if your only task for a WeChat simulator is "Send a message to X", then:</p>
+      <ul>
+        <li>The <strong>Chat tab</strong> and <strong>Chat detail page</strong> need full interaction logic.</li>
+        <li>The <strong>Contacts tab</strong> needs to display contact entries (they are targets for messaging).</li>
+        <li>The <strong>Discover tab</strong> and <strong>Me tab</strong> only need to look correct — buttons don't need to do anything.</li>
+        <li>Features like "Scan QR", "Mini Programs", "Moments" can be omitted.</li>
+      </ul>
+      <h3>Simplification guidelines</h3>
+      <ul>
+        <li><strong>Feature simplification:</strong> Only implement features that tasks touch. E.g., messaging supports text and images only — no voice, video calls, or location sharing.</li>
+        <li><strong>UI simplification:</strong> Preserve the layout and visual structure of the real app, but unused detail elements (decorative badges, feature icons that tasks never activate) can be dropped.</li>
+        <li>The goal is "visually realistic at a glance, functionally scoped to the task set."</li>
+      </ul>
+
+      <!-- Step 3: Page tree -->
+      <h2 class="title is-4" id="sec-pages"><span class="step-num">3</span>Page Tree Design</h2>
+      <p>
+        The <strong>page tree</strong> is a JSON structure that defines which screens (Activities/Composables)
+        exist in your app and how they relate to each other. It prevents the AI from creating a
+        monolithic file and ensures a clean navigation graph.
+      </p>
+<pre><code>{
+  "MainActivity": [
+    "ChatTab",
+    "ContactTab",
+    "DiscoverTab",
+    "MeTab"
+  ],
+  "ChatTab": ["ChatDetail"],
+  "ContactTab": ["ContactDetail"]
+}</code></pre>
+      <h3>The page tree grows incrementally</h3>
+      <p>
+        You don't need to define every page upfront. Start with top-level tabs, mark the one you're
+        currently building with a <code>// now todo</code> annotation, and expand as you go:
+      </p>
+<pre><code>{
+  "MainActivity": [
+    "ChatTab",       // now todo
+    "ContactTab",
+    "DiscoverTab",
+    "MeTab"
+  ]
+}</code></pre>
+      <p>Once <code>ChatTab</code> is done, add its children and move the marker:</p>
+<pre><code>{
+  "MainActivity": ["ChatTab", "ContactTab", "DiscoverTab", "MeTab"],
+  "ChatTab": ["ChatDetail"]  // now todo
+}</code></pre>
+
+      <!-- Step 4: Data modeling -->
+      <h2 class="title is-4" id="sec-data"><span class="step-num">4</span>Data Modeling</h2>
+      <p>
+        AppSim-Bench uses <strong>outcome-based evaluation</strong>. To verify that a task was completed
+        correctly, you need observable signals stored in JSON files — not a database.
+        Design data structures that capture the minimal state required to verify your tasks.
+      </p>
+      <p>Example prompt for CC:</p>
+<pre><code>I need to verify GUI agent task completion. Design data structures for
+task-relevant signals. For example:
+- To verify "like a post", I need a likes list per post.
+- To verify "send a message", I need a message history.
+
+## My tasks:
+{paste your task list here}
+
+## Requirements:
+1. Design only what my task list requires — nothing extra.
+2. Place Kotlin data classes in app/src/main/java/com/example/MyWechat/model/
+3. Only define data structures — no verification logic yet.</code></pre>
+      <h3>Initial data</h3>
+      <p>
+        After data structures are defined, populate initial data as JSON files under
+        <code>app/src/main/assets/data/</code>. Text content (chat messages, contact names, etc.)
+        can be AI-generated. Image assets (avatars, product photos) should be placed in a
+        dedicated folder (e.g., <code>app/src/main/assets/avatar/</code>).
+      </p>
+
+      <!-- Step 5: Iterative development -->
+      <h2 class="title is-4" id="sec-dev"><span class="step-num">5</span>Iterative Development</h2>
+      <p>With the project, page tree, data model, and reference screenshots in place, development proceeds one page at a time:</p>
+      <ol>
+        <li><strong>Take a screenshot</strong> of the real app's corresponding page. Save it in a <code>UIReference/</code> folder, named to match the page tree node (e.g., <code>UIReference/ChatTab.jpg</code>).</li>
+        <li><strong>Write a requirements block</strong> in <code>requirements.md</code> describing the page in detail.</li>
+        <li><strong>Invoke CC in Plan mode</strong>: ask it to read <code>requirements.md</code> and implement the page.</li>
+        <li><strong>Review the plan</strong>, then let CC execute.</li>
+        <li><strong>Build and run</strong> on the emulator. If something is wrong, describe the issue to CC and iterate.</li>
+        <li><strong>Commit</strong> once the page is satisfactory.</li>
+        <li><strong>Move to the next page</strong> — update the <code>// now todo</code> marker.</li>
+      </ol>
+      <h3>Example requirements block</h3>
+<pre><code>## Page tree
+```json
+{
+  "MainActivity": ["ChatTab", "ContactTab", "DiscoverTab", "MeTab"],
+  "ChatTab": ["ChatDetail"]  // now todo
+}
+```
+
+## Reference screenshot
+**UIReference/ChatTab.jpg**
+
+## Current task
+Design the ChatTab page. Elements:
+1. Top bar: search button, "+" button.
+2. Chat list: each entry shows avatar, contact/group name, last message
+   preview, and timestamp (format: MM.DD HH:MM).
+3. Image messages display as "[Image]".
+4. No "send failed" indicator (simplification).
+5. No voice messages (simplification).</code></pre>
+      <h3>Refinement cycle</h3>
+      <p>After the initial implementation, inspect the result and provide corrections. Be specific:</p>
+<pre><code>Issues with current ChatTab:
+- Avatars are not loading. Check asset paths under app/src/main/assets/avatar/.
+- Only 4 conversations shown — increase to 8.
+- Contact names look fake ("User1"). Use realistic Chinese names.
+- Add at least one group chat.</code></pre>
+      <p>Repeat until the page matches the reference screenshot closely enough for the benchmark's visual-realism standard.</p>
+
+      <div class="tip-box" style="margin-top:2rem;">
+        <strong>Summary:</strong> The development workflow is a tight loop of
+        <em>specify → generate → verify → commit → expand</em>. Each iteration adds one page
+        or refines one aspect, keeping the project always in a buildable, runnable state.
+      </div>
+
+      <a href="index.html" class="back-link" style="margin-top:2rem;">&larr; Back to project page</a>
+    </div>
+  </section>
+
+  <script>
+    (function() {
+      const nav = document.getElementById("sideNav");
+      if (!nav) return;
+      const links = nav.querySelectorAll("a[href^='#']");
+      const sections = Array.from(links).map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+      function update() {
+        let current = "";
+        const offset = window.innerHeight * 0.3;
+        sections.forEach(sec => { if (sec.getBoundingClientRect().top <= offset) current = sec.id; });
+        links.forEach(a => { a.classList.toggle("active", a.getAttribute("href") === "#" + current); });
+      }
+      window.addEventListener("scroll", update, { passive: true });
+      update();
+    })();
+  </script>
+</body>
+</html>
