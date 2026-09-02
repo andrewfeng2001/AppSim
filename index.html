@@ -236,7 +236,7 @@
             We propose <strong>AppSim-Bench</strong>, which addresses this trade-off through controllable simulated apps that preserve task-relevant interaction logic while supporting deterministic evaluation. Built through a coding-agent-assisted and human-verified workflow, it contains <strong>557 tasks across 17 high-frequency Chinese and English apps</strong>. Its controllable backend data and outcome-based verification remove major sources of environmental stochasticity, enabling reproducible cross-model comparison.
           </p>
           <p>
-            Evaluating <strong>15 GUI agents</strong>, we find that autonomous mobile execution remains far from solved. The best model completes only <strong>50.27%</strong> of tasks, and <strong>29.08%</strong> of tasks are not solved by any agent. Further analysis shows that failures concentrate in longer workflows, numerical reasoning tasks, and inefficient trajectories marked by high action overhead and budget exhaustion.
+            Evaluating <strong>19 GUI agents</strong>, spanning general-purpose and GUI-specialized systems, we find that autonomous mobile execution remains far from solved. The best model completes only <strong>50.27%</strong> of tasks, and <strong>28.55%</strong> of tasks are not solved by any agent. Further analysis shows that failures concentrate in longer workflows, numerical reasoning tasks, and inefficient trajectories marked by high action overhead and budget exhaustion. Our project is available at <a href="https://github.com/Acrab-Lab/AppSim" target="_blank">https://github.com/Acrab-Lab/AppSim</a>.
           </p>
         </div>
       </div>
@@ -409,42 +409,57 @@
         <h2 class="title is-3">Main Results</h2>
         <div class="content has-text-justified">
           <p>
-            Overall accuracy of 15 agents on AppSim-Bench, with task-weighted accuracy on the Chinese (ZH) and English (EN) app groups, and accuracy by task length (<em>#S</em> = human-annotated step count). Even the strongest model completes only about half of the tasks, and performance drops sharply on the longest workflows (≥11 steps).
+            Overall accuracy of 19 agents on AppSim-Bench, spanning general-purpose and GUI-specialized systems, with task-weighted accuracy on the Chinese (ZH) and English (EN) app groups, accuracy by task length (<em>#S</em> = human-annotated step count), and numerical-reasoning subtypes. Even the strongest model completes only about half of the tasks, and performance drops sharply on the longest workflows (≥11 steps).
           </p>
         </div>
         <div class="table-container">
-          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="font-size:0.9rem;">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="font-size:0.8rem; min-width: 1280px;">
             <thead>
               <tr>
-                <th>Agent Model</th>
+                <th rowspan="2">Agent Model</th>
+                <th colspan="3" class="has-text-centered">Overall Benchmark</th>
+                <th colspan="3" class="has-text-centered">Task Length</th>
+                <th colspan="4" class="has-text-centered">Numerical Reasoning Subtype</th>
+              </tr>
+              <tr>
                 <th>Overall</th>
                 <th>ZH Apps</th>
                 <th>EN Apps</th>
                 <th>#S ≤ 5</th>
                 <th>#S 6–10</th>
                 <th>#S ≥ 11</th>
+                <th>Cnt.</th>
+                <th>Arith.</th>
+                <th>Comp.</th>
+                <th>Thres.</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>Claude-Opus-4.7</td><td><strong>50.27%</strong></td><td><strong>60.07%</strong></td><td>40.15%</td><td>58.87%</td><td><strong>54.29%</strong></td><td>28.15%</td></tr>
-              <tr><td>Gemini-3-Pro</td><td>49.91%</td><td><strong>60.07%</strong></td><td>39.42%</td><td>56.38%</td><td>52.86%</td><td><strong>33.33%</strong></td></tr>
-              <tr><td>GPT-5.5</td><td>49.73%</td><td>58.66%</td><td><strong>40.51%</strong></td><td><strong>59.22%</strong></td><td>52.14%</td><td>27.41%</td></tr>
-              <tr><td>Gemini-3.1-Pro</td><td>49.55%</td><td>59.36%</td><td>39.42%</td><td>56.74%</td><td>52.86%</td><td>31.11%</td></tr>
-              <tr><td>Doubao-Seed-1.6</td><td>39.14%</td><td>50.88%</td><td>27.01%</td><td>45.74%</td><td>43.57%</td><td>20.74%</td></tr>
-              <tr><td>GPT-5</td><td>33.39%</td><td>37.81%</td><td>28.83%</td><td>43.62%</td><td>31.43%</td><td>14.07%</td></tr>
-              <tr><td>Doubao-Seed-1.8</td><td>32.14%</td><td>34.63%</td><td>29.56%</td><td>43.26%</td><td>27.86%</td><td>13.33%</td></tr>
-              <tr><td>Qwen-3.6-Plus</td><td>31.42%</td><td>39.58%</td><td>22.99%</td><td>39.01%</td><td>31.43%</td><td>15.56%</td></tr>
-              <tr><td>Doubao-Seed-2.0</td><td>29.26%</td><td>36.40%</td><td>21.90%</td><td>37.94%</td><td>28.57%</td><td>11.85%</td></tr>
-              <tr><td>GPT-5.4</td><td>29.08%</td><td>34.63%</td><td>23.36%</td><td>38.30%</td><td>25.71%</td><td>13.33%</td></tr>
-              <tr><td>Qwen-3.6-Flash</td><td>28.19%</td><td>38.87%</td><td>17.15%</td><td>38.30%</td><td>25.71%</td><td>9.63%</td></tr>
-              <tr><td>Claude-Sonnet-4.6</td><td>27.29%</td><td>31.10%</td><td>23.36%</td><td>36.17%</td><td>27.86%</td><td>8.15%</td></tr>
-              <tr><td>Claude-Haiku-4.5</td><td>22.80%</td><td>22.61%</td><td>22.99%</td><td>34.04%</td><td>15.71%</td><td>6.67%</td></tr>
-              <tr><td>Claude-Sonnet-4.5</td><td>21.01%</td><td>24.03%</td><td>17.88%</td><td>31.91%</td><td>14.29%</td><td>5.19%</td></tr>
-              <tr><td>Gemini-2.5-Pro</td><td>17.24%</td><td>21.20%</td><td>13.14%</td><td>26.24%</td><td>14.29%</td><td>1.48%</td></tr>
+              <tr><td colspan="11" style="font-style:italic;background:#f8fafc;">General-purpose Agents</td></tr>
+              <tr><td>Claude-Opus-4.7</td><td><strong>50.27%</strong></td><td><strong>60.07%</strong></td><td><u>40.15%</u></td><td><u>58.87%</u></td><td><strong>54.29%</strong> <span class="has-text-danger">↓4.58</span></td><td>28.15% <span class="has-text-danger">↓26.14</span><sup><span class="has-text-danger">†</span></sup></td><td><strong>52.31%</strong></td><td><u>55.56%</u></td><td><strong>52.00%</strong></td><td><strong>42.86%</strong></td></tr>
+              <tr><td>Gemini-3-Pro</td><td><u>49.91%</u></td><td><strong>60.07%</strong></td><td>39.42%</td><td>56.38%</td><td><u>52.86%</u> <span class="has-text-danger">↓3.52</span></td><td><strong>33.33%</strong> <span class="has-text-danger">↓19.53</span></td><td><u>46.15%</u></td><td>42.22%</td><td>49.33%</td><td>23.81%</td></tr>
+              <tr><td>GPT-5.5</td><td>49.73%</td><td>58.66%</td><td><strong>40.51%</strong></td><td><strong>59.22%</strong></td><td>52.14% <span class="has-text-danger">↓7.08</span></td><td>27.41% <span class="has-text-danger">↓24.73</span></td><td>44.62%</td><td><strong>57.78%</strong></td><td><strong>52.00%</strong></td><td><u>33.33%</u></td></tr>
+              <tr><td>Gemini-3.1-Pro</td><td>49.55%</td><td><u>59.36%</u></td><td>39.42%</td><td>56.74%</td><td><u>52.86%</u> <span class="has-text-danger">↓3.88</span></td><td><u>31.11%</u> <span class="has-text-danger">↓21.75</span></td><td>43.08%</td><td>42.22%</td><td><u>50.67%</u></td><td>23.81%</td></tr>
+              <tr><td>Doubao-Seed-1.6</td><td>39.14%</td><td>50.88%</td><td>27.01%</td><td>45.74%</td><td>43.57% <span class="has-text-danger">↓2.17</span></td><td>20.74% <span class="has-text-danger">↓22.83</span></td><td>23.08%</td><td>22.22%</td><td>36.00%</td><td>9.52%</td></tr>
+              <tr><td>GPT-5</td><td>33.39%</td><td>37.81%</td><td>28.83%</td><td>43.62%</td><td>31.43% <span class="has-text-danger">↓12.19</span></td><td>14.07% <span class="has-text-danger">↓17.36</span></td><td>27.69%</td><td>35.56%</td><td>40.00%</td><td>4.76%</td></tr>
+              <tr><td>Doubao-Seed-1.8</td><td>32.14%</td><td>34.63%</td><td>29.56%</td><td>43.26%</td><td>27.86% <span class="has-text-danger">↓15.40</span></td><td>13.33% <span class="has-text-danger">↓14.53</span></td><td>23.08%</td><td>31.11%</td><td>28.00%</td><td>4.76%</td></tr>
+              <tr><td>Qwen-3.6-Plus</td><td>31.42%</td><td>39.58%</td><td>22.99%</td><td>39.01%</td><td>31.43% <span class="has-text-danger">↓7.58</span></td><td>15.56% <span class="has-text-danger">↓15.87</span></td><td>23.08%</td><td>13.33%</td><td>28.00%</td><td>9.52%</td></tr>
+              <tr><td>Doubao-Seed-2.0</td><td>29.26%</td><td>36.40%</td><td>21.90%</td><td>37.94%</td><td>28.57% <span class="has-text-danger">↓9.37</span></td><td>11.85% <span class="has-text-danger">↓16.72</span></td><td>27.69%</td><td>28.89%</td><td>20.00%</td><td>14.29%</td></tr>
+              <tr><td>GPT-5.4</td><td>29.08%</td><td>34.63%</td><td>23.36%</td><td>38.30%</td><td>25.71% <span class="has-text-danger">↓12.59</span></td><td>13.33% <span class="has-text-danger">↓12.38</span></td><td>24.62%</td><td>24.44%</td><td>30.67%</td><td>9.52%</td></tr>
+              <tr><td>Qwen-3.6-Flash</td><td>28.19%</td><td>38.87%</td><td>17.15%</td><td>38.30%</td><td>25.71% <span class="has-text-danger">↓12.59</span></td><td>9.63% <span class="has-text-danger">↓16.08</span></td><td>20.00%</td><td>24.44%</td><td>26.67%</td><td>4.76%</td></tr>
+              <tr><td>Claude-Sonnet-4.6</td><td>27.29%</td><td>31.10%</td><td>23.36%</td><td>36.17%</td><td>27.86% <span class="has-text-danger">↓8.31</span></td><td>8.15% <span class="has-text-danger">↓19.71</span></td><td>29.23%</td><td>33.33%</td><td>26.67%</td><td>14.29%</td></tr>
+              <tr><td>Claude-Haiku-4.5</td><td>22.80%</td><td>22.61%</td><td>22.99%</td><td>34.04%</td><td>15.71% <span class="has-text-danger">↓18.33</span><sup><span class="has-text-danger">†</span></sup></td><td>6.67% <span class="has-text-danger">↓9.04</span></td><td>20.00%</td><td>22.22%</td><td>20.00%</td><td>9.52%</td></tr>
+              <tr><td>Claude-Sonnet-4.5</td><td>21.01%</td><td>24.03%</td><td>17.88%</td><td>31.91%</td><td>14.29% <span class="has-text-danger">↓17.62</span></td><td>5.19% <span class="has-text-danger">↓9.10</span></td><td>23.08%</td><td>26.67%</td><td>21.33%</td><td>14.29%</td></tr>
+              <tr><td>Gemini-2.5-Pro</td><td>17.24%</td><td>21.20%</td><td>13.14%</td><td>26.24%</td><td>14.29% <span class="has-text-danger">↓11.95</span></td><td>1.48% <span class="has-text-danger">↓12.81</span></td><td>23.08%</td><td>17.78%</td><td>17.33%</td><td>9.52%</td></tr>
+              <tr><td colspan="11" style="font-style:italic;background:#f8fafc;">GUI-specialized Agents</td></tr>
+              <tr><td>MobileAgent-v3.5</td><td>31.42%</td><td>35.34%</td><td>27.37%</td><td>41.49%</td><td>26.43% <span class="has-text-danger">↓15.06</span></td><td>15.56% <span class="has-text-danger">↓10.87</span></td><td>18.46%</td><td>24.44%</td><td>32.00%</td><td>4.76%</td></tr>
+              <tr><td>UI-TARS-1.5-7B</td><td>22.62%</td><td>31.10%</td><td>13.87%</td><td>30.14%</td><td>22.86% <span class="has-text-danger">↓7.28</span></td><td>6.67% <span class="has-text-danger">↓16.19</span></td><td>20.00%</td><td>8.89%</td><td>16.00%</td><td>4.76%</td></tr>
+              <tr><td>AgentCPM-GUI</td><td>10.05%</td><td>9.19%</td><td>10.95%</td><td>17.02%</td><td>5.71% <span class="has-text-danger">↓11.31</span></td><td>0.00% <span class="has-text-danger">↓5.71</span></td><td>3.08%</td><td>2.22%</td><td>5.33%</td><td>4.76%</td></tr>
+              <tr><td>V-Droid</td><td>9.87%</td><td>13.43%</td><td>6.20%</td><td>15.25%</td><td>7.86% <span class="has-text-danger">↓7.39</span></td><td>0.74% <span class="has-text-danger">↓7.12</span></td><td>15.38%</td><td>11.11%</td><td>9.33%</td><td>0.00%</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="is-size-7 has-text-grey">Bold marks the best value in each column. ZH/EN are task-weighted accuracies over the Chinese and English app groups.</p>
+        <p class="is-size-7 has-text-grey">Bold marks the best value in each column and underlining marks the second-best. ZH/EN are task-weighted accuracies over the Chinese and English app groups. Down arrows indicate drops relative to the adjacent shorter task-length bucket.</p>
       </div>
     </div>
   </div>
@@ -466,7 +481,7 @@
   title        = {AppSim-Bench: Bridging Real-world Apps and Reproducible Evaluation for Mobile GUI Agents},
   author       = {Jintian Feng, Long Chen, Xiao Yu, Jiayi Dai, Chenglong Liu, Haoru Wang, Zizhen Xue, Yuxuan Shi, Ziyang Wang and Yichen Gong},
   year         = {2026},
-  booktitle    = {EMNLP 2026 Main Conference},
+  booktitle    = {EMNLP 2026 main conference},
   note         = {Accepted}
 }</code></pre>
     </div>
