@@ -138,8 +138,6 @@
     <a href="#statistics">Statistics</a>
     <a href="#gallery">Gallery</a>
     <a href="#results">Results</a>
-    <a href="#realism">Realism</a>
-    <a href="#analysis">Analysis</a>
     <a href="#BibTeX">BibTeX</a>
   </nav>
 
@@ -181,7 +179,7 @@
 
               <!-- Code (coming soon) -->
               <span class="link-block">
-                <a href="code.html" target="_blank"
+                <a href="https://github.com/Acrab-Lab/AppSim" target="_blank"
                 class="external-link button is-normal is-rounded is-dark">
                 <span class="icon">
                   <i class="fab fa-github"></i>
@@ -201,16 +199,6 @@
               </a>
             </span>
 
-              <!-- Develop Docs -->
-              <span class="link-block">
-                <a href="develop-docs.html" target="_blank"
-                class="external-link button is-normal is-rounded is-dark">
-                <span class="icon">
-                  <i class="fas fa-book"></i>
-                </span>
-                <span>Develop Docs</span>
-              </a>
-            </span>
             </div>
           </div>
         </div>
@@ -462,73 +450,6 @@
   </div>
 </section>
 <!-- End leaderboard -->
-
-
-<!-- How realistic is AppSim-Bench -->
-<section class="section hero" id="realism">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-full">
-        <h2 class="title is-3">How Realistic Is AppSim-Bench?</h2>
-        <div class="content has-text-justified">
-          <p>
-            A simulated benchmark is only useful if it stays close to the real thing. We assess realism along two axes: whether the screens <em>look</em> real to people, and whether the apps <em>behave</em> like their real counterparts in terms of page structure and navigation.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="columns is-centered" style="margin-top:0.5rem;">
-      <div class="column is-half has-text-centered">
-        <img src="static/images/realism.png" alt="Blind human evaluation of visual realism" loading="lazy"/>
-        <h2 class="subtitle has-text-centered" style="margin-top:0.75rem;">
-          <strong>Visual realism.</strong> In a blind A/B study, seven annotators compared matched real and simulated assets. On static screenshots they were undecided 46.3% of the time and mistook the simulator for the real app in 19.0% of decided cases; on dynamic interaction sequences, 35.7% undecided and 15.2% mistaken. The simulated screens are visually hard to tell apart from real services.
-        </h2>
-      </div>
-      <div class="column is-half has-text-centered">
-        <div class="content has-text-justified" style="height:100%; display:flex; align-items:center;">
-          <p>
-            <strong>Behavioral realism.</strong> Beyond appearance, each simulated app reproduces the page-transition topology of the real app for the screens that tasks actually touch. The figure below overlays the two: <span style="color:#208a49;font-weight:600;">green</span> pages are matched and preserved in both the real app and the simulator, while <span style="font-weight:600;">black</span> pages are real-app states that lie outside the benchmark tasks and are intentionally pruned. This keeps the interaction logic an agent must follow faithful to the real app, while removing irrelevant states that would only add noise to evaluation.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="columns is-centered has-text-centered" style="margin-top:1rem;">
-      <div class="column is-full">
-        <img src="static/images/page_tree.png" alt="Page-transition comparison between a real app and its simulator" loading="lazy"/>
-        <h2 class="subtitle has-text-centered" style="margin-top:0.75rem;">
-          <strong>Page-transition comparison between a real app and its simulator.</strong> Green boxes are task-relevant pages matched in both; black boxes are real-app pages not retained in the simulator.
-        </h2>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End how realistic -->
-
-
-<!-- Analysis figures -->
-<section class="section hero is-light" id="analysis">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Analysis</h2>
-
-    <div class="columns is-centered" style="margin-top:1rem;">
-      <div class="column is-half has-text-centered">
-        <img src="static/images/solved_by_k.png" alt="Distribution of tasks solved by k agents" loading="lazy"/>
-        <h2 class="subtitle has-text-centered" style="margin-top:0.75rem;">
-          <strong>Shared blind spots.</strong> 29.08% of tasks are solved by no agent, and only 2.15% are solved by all, exposing systematic failure cases.
-        </h2>
-      </div>
-      <div class="column is-half has-text-centered">
-        <img src="static/images/efficiency.png" alt="Accuracy vs. efficiency relationships across agents" loading="lazy"/>
-        <h2 class="subtitle has-text-centered" style="margin-top:0.75rem;">
-          <strong>Accuracy vs. efficiency.</strong> Accuracy is negatively correlated with average valid actions, action overhead, and budget exhaustion: low accuracy comes with longer, less human-like trajectories.
-        </h2>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End analysis figures -->
 
 
 <!--BibTex citation -->
