@@ -164,7 +164,6 @@
                 <span><sup>3</sup>Agentic Labs, Acrab AI</span><br>
                 <span><sup>*</sup>Work done as a research intern at Acrab AI.</span><br>
                 <span><sup>†</sup>Yuxuan Shi is the corresponding author.</span><br>
-                <span>fjt2018@mails.ccnu.edu.cn</span>
               </div>
             </div>
 
@@ -421,7 +420,29 @@
           </p>
         </div>
         <div class="table-container">
-          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="font-size:0.8rem; min-width: 1280px;">
+          <style>
+            table.results-table th,
+            table.results-table td {
+              padding: 0.35rem 0.45rem;
+              white-space: normal;
+              word-break: break-word;
+              vertical-align: middle;
+            }
+            table.results-table thead th {
+              line-height: 1.15;
+            }
+            table.results-table td:first-child,
+            table.results-table th:first-child {
+              word-break: keep-all;
+            }
+          </style>
+          <table class="table results-table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="font-size:0.72rem; table-layout:fixed; width:100%;">
+            <colgroup>
+              <col style="width:17%;">
+              <col span="3" style="width:8.3%;">
+              <col span="3" style="width:8.3%;">
+              <col span="4" style="width:8.3%;">
+            </colgroup>
             <thead>
               <tr>
                 <th rowspan="2">Agent Model</th>
